@@ -1,14 +1,13 @@
 import Head from "next/head";
 import Image from "next/image";
 import { Icon } from "@iconify-icon/react";
+import Link from "next/link";
 
 import PhoneImage from "../images/png-phone.png";
 import Sponsors from "../images/Group-51.png";
 import PhoneImage1 from "../images/png-phone2.png";
 import PhoneImage2 from "../images/png-phone3.png";
 import User1 from "../images/review.png";
-import GooglePlay from "../images/GooglePlay.png";
-import AppStore from "../images/AppStore.png";
 
 const Nav = () => (
   <nav className="flex py-2 px-4 flex-row justify-between items-center">
@@ -21,9 +20,9 @@ const Nav = () => (
       </div>
     </div>
     <div className="flex flex-row items-center gap-5">
-      <button className="btn btn-primary btn-outline font-bold py-2 px-4">
+      <Link href="/login" className="btn btn-primary btn-outline font-bold py-2 px-4">
         Login
-      </button>
+      </Link>
       <button className="btn btn-primary font-bold py-2 px-4">Sign Up</button>
     </div>
   </nav>
