@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "turbodev": "concurrently \"next dev --turbo\" \"tailwindcss -i styles/globals.css -o styles/dist.css -w\"",
-    "turbobuild": "tailwindcss -m -i styles/globals.css -o styles/dist.css && next build",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

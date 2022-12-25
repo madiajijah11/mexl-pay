@@ -10,8 +10,8 @@ import PhoneImage2 from "../images/png-phone3.png";
 import User1 from "../images/review.png";
 
 const Nav = () => (
-  <nav className="flex py-2 px-4 flex-row justify-between items-center">
-    <div className="flex flex-row items-center">
+  <nav className="navbar py-2 px-4">
+    <div className="navbar-start">
       {/* <figure className="w-12 h-12">
         <Image src={Logo} alt="MexL Pay" width={200} height={200} />
       </figure> */}
@@ -19,11 +19,14 @@ const Nav = () => (
         MexL Pay
       </div>
     </div>
-    <div className="flex flex-row items-center gap-5">
-      <Link href="/login" className="btn btn-primary btn-outline font-bold py-2 px-4">
+    <div className="navbar-end gap-5">
+      <Link
+        href="/login"
+        className="btn btn-secondary btn-outline font-bold py-2 px-4"
+      >
         Login
       </Link>
-      <button className="btn btn-primary font-bold py-2 px-4">Sign Up</button>
+      <button className="btn btn-secondary font-bold py-2 px-4">Sign Up</button>
     </div>
   </nav>
 );
@@ -193,7 +196,7 @@ const FourthSection = () => (
           <p>
             “This is the most outstanding app that I’ve ever try in my live,
             this app is such an amazing masterpiece and it’s suitable for you
-            who is bussy with their bussiness and must transfer money to another
+            who is busy with their business and must transfer money to another
             person aut there. Just try this app and see the power!”
           </p>
         </div>

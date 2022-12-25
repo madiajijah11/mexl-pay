@@ -85,8 +85,8 @@ export default function Register() {
               Start Accessing Banking Needs With All Devices and All Platforms
               With 30.000+ Users
             </div>
-            <p className="mb-20">
-              Transfering money is eassier than ever, you can access FazzPay
+            <p className="mb-10">
+              Transferring money is easier than ever, you can access MexL Pay
               wherever you are. Desktop, laptop, mobile phone? we cover all of
               that for you!
             </p>

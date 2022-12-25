@@ -7,26 +7,14 @@ import * as Yup from "yup";
 import YupPassword from "yup-password";
 
 import PhoneImage from "../images/Group-57.png";
-import { useState } from "react";
-import Link from "next/link";
 
 YupPassword(Yup);
 
-const LoginSchema = Yup.object().shape({
+const ForgotPasswordSchema = Yup.object().shape({
   email: Yup.string().email().required(),
-  password: Yup.string()
-    .min(8)
-    .max(16)
-    .required()
-    .password()
-    .minLowercase(1)
-    .minUppercase(1)
-    .minNumbers(1)
-    .minSymbols(1),
 });
 
-export default function Login() {
-  const [showPassword, setShowPassword] = useState(false);
+export default function ForgotPassword() {
 
   const {
     register,
@@ -34,10 +22,9 @@ export default function Login() {
     formState: { errors, isDirty, isValid },
   } = useForm({
     mode: "onChange",
-    resolver: yupResolver(LoginSchema),
+    resolver: yupResolver(ForgotPasswordSchema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
@@ -46,8 +33,8 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Login: MexL Pay</title>
-        <meta name="description" content="Login to MexL Pay" />
+        <title>Forgot Password: MexL Pay</title>
+        <meta name="description" content="Forgot Password MexL Pay" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
@@ -78,13 +65,13 @@ export default function Login() {
           </div>
           <div className="w-2/5 py-16 px-14 flex flex-col gap-5 justify-center">
             <div className="font-bold text-2xl">
-              Start Accessing Banking Needs With All Devices and All Platforms
-              With 30.000+ Users
+              Did You Forgot Your Password? Don’t Worry, You Can Reset Your
+              Password In a Minutes.
             </div>
             <p className="mb-10">
-              Transferring money is easier than ever, you can access MexL Pay
-              wherever you are. Desktop, laptop, mobile phone? we cover all of
-              that for you!
+              To reset your password, you must type your e-mail and we will send
+              a link to your email and you will be directed to the reset
+              password screens.
             </p>
             <form
               onClick={handleSubmit(onSubmit)}
@@ -109,61 +96,14 @@ export default function Login() {
                   </span>
                 )}
               </div>
-              <div>
-                <div className="w-full input-group relative">
-                  <span>
-                    <Icon icon="mdi:lock" width="35" height="35" />
-                  </span>
-                  {showPassword ? (
-                    <Icon
-                      icon="mdi:eye-off"
-                      className="absolute top-1 right-2 z-10"
-                      width="35"
-                      height="35"
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  ) : (
-                    <Icon
-                      icon="mdi:eye"
-                      className="absolute top-1 right-2 z-10"
-                      width="35"
-                      height="35"
-                      onClick={() => setShowPassword(!showPassword)}
-                    />
-                  )}
-                  <input
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    className="input input-bordered input-primary w-full"
-                    {...register("password", { required: true })}
-                  />
-                </div>
-                {errors.password && (
-                  <span className="text-error mt-2">
-                    {errors.password?.message}
-                  </span>
-                )}
-              </div>
-              <div className="-mt-8 text-right">
-                <Link href="#" className="hover:text-secondary">
-                  Forgot password?
-                </Link>
-              </div>
               <button
                 type="submit"
                 className="btn btn-primary"
                 disabled={!isDirty || !isValid}
               >
-                Login
+                Confirm
               </button>
             </form>
-            <div className="text-center">
-              Don’t have an account?{" "}
-              <Link href="/register" className="hover:text-secondary">
-                Let’s Sign Up
-              </Link>
-            </div>
           </div>
         </div>
       </main>
