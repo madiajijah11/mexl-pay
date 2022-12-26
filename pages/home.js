@@ -85,7 +85,6 @@ const HomeContent = () => (
                 </div>
                 <div className="font-bold text-red-700">-Rp149.000</div>
               </div>
-
             </div>
           </div>
         </div>
@@ -98,8 +97,8 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>MexL Pay</title>
-        <meta name="description" content="MexL Pay" />
+        <title>Home: MexL Pay</title>
+        <meta name="description" content="Home MexL Pay" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavbarHome />

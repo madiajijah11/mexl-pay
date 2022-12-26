@@ -161,10 +161,10 @@ const Transfer = () => {
             errors.pin6 ? (
               <span className="text-error -mt-8">PIN is required</span>
             ) : null}
-            <div className="modal-action -mt-10">
+            <div className="modal-action">
               <button
                 type="submit"
-                className="btn btn-primary modal-action"
+                className="btn btn-primary"
                 disabled={!isDirty || !isValid}
               >
                 Confirm

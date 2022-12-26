@@ -12,19 +12,12 @@ const Transfer = () => (
       <HomeMenu />
       <div className="w-full flex flex-col gap-5 bg-neutral p-10 rounded-box shadow-xl">
         <div className="font-bold">Transfer Money</div>
-        <div className="flex flex-col gap-5">
-          <div className="flex gap-5 items-center rounded-box bg-base-100 shadow-xl p-5">
-            <div className="flex gap-4">
-              <Image
-                src={ProfilePicture}
-                alt="netflix"
-                width={70}
-                height={70}
-              />
-              <div className="flex flex-col justify-center gap-2">
-                <div className="font-bold">Samuel Suhi</div>
-                <div>+6282256964453</div>
-              </div>
+        <div className="flex gap-5 items-center rounded-box bg-base-100 shadow-xl p-5">
+          <div className="flex gap-4">
+            <Image src={ProfilePicture} alt="netflix" width={70} height={70} />
+            <div className="flex flex-col justify-center gap-2">
+              <div className="font-bold">Samuel Suhi</div>
+              <div>+6282256964453</div>
             </div>
           </div>
         </div>
