@@ -14,7 +14,7 @@ const ChangePhoneNumberSchema = Yup.object().shape({
   phoneNumber: Yup.string().required().min(10).max(14),
 });
 
-const ChangePasswordContent = () => {
+const ChangePhoneNumberContent = () => {
   const {
     register,
     handleSubmit,
@@ -80,16 +80,16 @@ const ChangePasswordContent = () => {
   );
 };
 
-export default function ChangePassword() {
+export default function ChangePhoneNumber() {
   return (
     <>
       <Head>
-        <title>Change Password: MexL Pay</title>
-        <meta name="description" content="Change Password MexL Pay" />
+        <title>Change Phone Number: MexL Pay</title>
+        <meta name="description" content="Change Phone Number MexL Pay" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavbarHome />
-      <ChangePasswordContent />
+      <ChangePhoneNumberContent />
       <FooterHome />
     </>
   );
