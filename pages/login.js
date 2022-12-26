@@ -43,6 +43,10 @@ export default function Login() {
 
   const onSubmit = (data) => console.log(data);
 
+  const showingPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <>
       <Head>
@@ -87,7 +91,7 @@ export default function Login() {
               that for you!
             </p>
             <form
-              onClick={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-10"
             >
               <div>
@@ -120,7 +124,7 @@ export default function Login() {
                       className="absolute top-1 right-2 z-10"
                       width="35"
                       height="35"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={showingPassword}
                     />
                   ) : (
                     <Icon
@@ -128,7 +132,7 @@ export default function Login() {
                       className="absolute top-1 right-2 z-10"
                       width="35"
                       height="35"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={showingPassword}
                     />
                   )}
                   <input
@@ -146,7 +150,7 @@ export default function Login() {
                 )}
               </div>
               <div className="-mt-8 text-right">
-                <Link href="#" className="hover:text-secondary">
+                <Link href="/forgot-password" className="hover:text-secondary">
                   Forgot password?
                 </Link>
               </div>

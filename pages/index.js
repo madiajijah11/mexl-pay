@@ -26,7 +26,9 @@ const Nav = () => (
       >
         Login
       </Link>
-      <button className="btn btn-secondary font-bold py-2 px-4">Sign Up</button>
+      <Link href="/register" className="btn btn-secondary font-bold py-2 px-4">
+        Sign Up
+      </Link>
     </div>
   </nav>
 );
@@ -80,7 +82,6 @@ const SecondSection = () => (
           <div className="card-body items-center text-center">
             <Icon
               icon="material-symbols:phone-enabled"
-              color="purple"
               width="50"
               height="50"
             />
@@ -93,12 +94,7 @@ const SecondSection = () => (
         </div>
         <div className="card w-96 bg-primary">
           <div className="card-body items-center text-center">
-            <Icon
-              icon="material-symbols:lock"
-              color="purple"
-              width="50"
-              height="50"
-            />
+            <Icon icon="material-symbols:lock" width="50" height="50" />
             <h2 className="card-title">Data Privacy</h2>
             <p>
               We make sure your data is safe in our database and we will encrypt
@@ -108,12 +104,7 @@ const SecondSection = () => (
         </div>
         <div className="card w-96 bg-primary">
           <div className="card-body items-center text-center">
-            <Icon
-              icon="material-symbols:download"
-              color="purple"
-              width="50"
-              height="50"
-            />
+            <Icon icon="material-symbols:download" width="50" height="50" />
             <h2 className="card-title">Easy Download</h2>
             <p>
               Zwallet is 100% totally free to use it’s now available on Google

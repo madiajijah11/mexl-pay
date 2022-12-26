@@ -12,12 +12,12 @@ import YupPassword from "yup-password";
 YupPassword(Yup);
 
 const PinSchema = Yup.object().shape({
-  pin1: Yup.string().required(),
-  pin2: Yup.string().required(),
-  pin3: Yup.string().required(),
-  pin4: Yup.string().required(),
-  pin5: Yup.string().required(),
-  pin6: Yup.string().required(),
+  pin1: Yup.number().required(),
+  pin2: Yup.number().required(),
+  pin3: Yup.number().required(),
+  pin4: Yup.number().required(),
+  pin5: Yup.number().required(),
+  pin6: Yup.number().required(),
 });
 
 const Transfer = () => {
@@ -26,6 +26,7 @@ const Transfer = () => {
     handleSubmit,
     formState: { errors, isDirty, isValid },
   } = useForm({
+    mode: "onChange",
     resolver: yupResolver(PinSchema),
     defaultValues: {
       pin1: "",
@@ -106,7 +107,7 @@ const Transfer = () => {
             money.
           </p>
           <form
-            onClick={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-10"
           >
             <div className="w-full flex gap-5">

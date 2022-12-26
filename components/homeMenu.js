@@ -32,7 +32,7 @@ export default function HomeMenu() {
           </label>
         </li>
         <li className="hover-bordered">
-          <Link href="#">
+          <Link href="/profile">
             <Icon
               icon="material-symbols:person-outline"
               width="40"

@@ -1,5 +1,3 @@
-import { Icon } from "@iconify-icon/react";
-import Link from "next/link";
 import Head from "next/head";
 import NavbarHome from "../components/navbarHome";
 import FooterHome from "../components/footerHome";

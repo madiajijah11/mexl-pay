@@ -47,6 +47,10 @@ export default function Register() {
 
   const onSubmit = (data) => console.log(data);
 
+  const showingPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <>
       <Head>
@@ -91,7 +95,7 @@ export default function Register() {
               that for you!
             </p>
             <form
-              onClick={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-10"
             >
               <div>
@@ -170,7 +174,7 @@ export default function Register() {
                       className="absolute top-1 right-2 z-10"
                       width="35"
                       height="35"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={showingPassword}
                     />
                   ) : (
                     <Icon
@@ -178,7 +182,7 @@ export default function Register() {
                       className="absolute top-1 right-2 z-10"
                       width="35"
                       height="35"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={showingPassword}
                     />
                   )}
                   <input

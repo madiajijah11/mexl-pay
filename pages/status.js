@@ -14,9 +14,9 @@ const StatusContent = () => (
         <div className="flex flex-col gap-2 py-5 items-center justify-center">
           <Icon
             icon="icon-park-solid:check-one"
-            color="green"
             width="70"
             height="70"
+            style={{ color: "green" }}
           />
           <div className="font-bold text-xl">Transfer Success</div>
         </div>

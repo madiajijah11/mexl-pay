@@ -15,7 +15,6 @@ const ForgotPasswordSchema = Yup.object().shape({
 });
 
 export default function ForgotPassword() {
-
   const {
     register,
     handleSubmit,
@@ -74,7 +73,7 @@ export default function ForgotPassword() {
               password screens.
             </p>
             <form
-              onClick={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-10"
             >
               <div>
