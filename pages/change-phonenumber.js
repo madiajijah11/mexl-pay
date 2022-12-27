@@ -7,6 +7,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
 import { Icon } from "@iconify-icon/react";
+import IsLogin from "../components/IsLogin";
+import { axiosInstance } from "../helpers/axios.helper";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 YupPassword(Yup);
 
@@ -15,6 +19,11 @@ const ChangePhoneNumberSchema = Yup.object().shape({
 });
 
 const ChangePhoneNumberContent = () => {
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { token } = useSelector((state) => state.auth);
+
   const {
     register,
     handleSubmit,
@@ -27,7 +36,27 @@ const ChangePhoneNumberContent = () => {
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      const res = await axiosInstance.post("/profile/phone-number", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.data.success === true) {
+        setIsError(false);
+        setIsSuccess(true);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      if (error) {
+        setIsLoading(false);
+        setIsError(true);
+        setIsSuccess(false);
+      }
+    }
+  };
 
   return (
     <section>
@@ -44,6 +73,16 @@ const ChangePhoneNumberContent = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col items-center gap-5 mt-10"
             >
+              {isError && (
+                <span className="text-error mt-2">
+                  Failed to change phone number
+                </span>
+              )}
+              {isSuccess && (
+                <span className="text-success mt-2">
+                  Phone number changed successfully
+                </span>
+              )}
               <div className="w-1/3 input-group relative">
                 <span>
                   <Icon
@@ -68,7 +107,7 @@ const ChangePhoneNumberContent = () => {
               <button
                 type="submit"
                 className="btn btn-primary w-1/3"
-                disabled={!isDirty || !isValid}
+                disabled={!isDirty || !isValid || isLoading}
               >
                 Edit Phone Number
               </button>
@@ -80,7 +119,7 @@ const ChangePhoneNumberContent = () => {
   );
 };
 
-export default function ChangePhoneNumber() {
+function ChangePhoneNumber() {
   return (
     <>
       <Head>
@@ -94,3 +133,5 @@ export default function ChangePhoneNumber() {
     </>
   );
 }
+
+export default IsLogin(ChangePhoneNumber);

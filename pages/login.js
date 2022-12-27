@@ -5,10 +5,14 @@ import { Icon } from "@iconify-icon/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/actions/authAction";
 
 import PhoneImage from "../images/Group-57.png";
 import { useState } from "react";
 import Link from "next/link";
+import IsNotLogin from "../components/isNotLogin";
 
 YupPassword(Yup);
 
@@ -25,8 +29,13 @@ const LoginSchema = Yup.object().shape({
     .minSymbols(1),
 });
 
-export default function Login() {
+function Login() {
+  const { auth } = useSelector((state) => state);
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -41,7 +50,9 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    dispatch(login({ ...data, cb: () => router.push("/home") }));
+  };
 
   const showingPassword = () => {
     setShowPassword(!showPassword);
@@ -90,6 +101,16 @@ export default function Login() {
               wherever you are. Desktop, laptop, mobile phone? we cover all of
               that for you!
             </p>
+            {auth.error && (
+              <div className="text-error font-bold text-center">
+                Wrong Email or Password
+              </div>
+            )}
+            {auth.success && (
+              <div className="text-success font-bold text-center">
+                Login Success
+              </div>
+            )}
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-10"
@@ -140,6 +161,7 @@ export default function Login() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     className="input input-bordered input-primary w-full"
+                    autoComplete="on"
                     {...register("password", { required: true })}
                   />
                 </div>
@@ -157,7 +179,7 @@ export default function Login() {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={!isDirty || !isValid}
+                disabled={!isDirty || !isValid || auth?.loading}
               >
                 Login
               </button>
@@ -174,3 +196,5 @@ export default function Login() {
     </>
   );
 }
+
+export default IsNotLogin(Login);

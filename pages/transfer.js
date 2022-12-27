@@ -5,6 +5,7 @@ import FooterHome from "../components/footerHome";
 import Image from "next/image";
 import HomeMenu from "../components/homeMenu";
 import ProfilePicture from "../images/review.png";
+import IsLogin from "../components/IsLogin";
 
 const ReceiverList = () => (
   <section>
@@ -34,7 +35,7 @@ const ReceiverList = () => (
   </section>
 );
 
-export default function Transfer() {
+function Transfer() {
   return (
     <>
       <Head>
@@ -48,3 +49,5 @@ export default function Transfer() {
     </>
   );
 }
+
+export default IsLogin(Transfer);

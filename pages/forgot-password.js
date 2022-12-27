@@ -29,6 +29,8 @@ export default function ForgotPassword() {
 
   const onSubmit = (data) => console.log(data);
 
+  if (auth.token) router.push("/home");
+
   return (
     <>
       <Head>

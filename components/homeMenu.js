@@ -1,7 +1,10 @@
 import { Icon } from "@iconify-icon/react";
 import Link from "next/link";
+import { logout } from "../redux/reducers/authReducer";
+import { useDispatch } from "react-redux";
 
 export default function HomeMenu() {
+  const dispatch = useDispatch();
   return (
     <div className="bg-neutral rounded-box flex flex-col justify-between shadow-xl w-60 p-2">
       <ul className="menu">
@@ -45,10 +48,14 @@ export default function HomeMenu() {
       <div>
         <ul className="menu">
           <li className="hover-bordered">
-            <Link href="#">
+            <button
+              onClick={() => {
+                dispatch(logout());
+              }}
+            >
               <Icon icon="material-symbols:logout" width="40" height="40" />
               Logout
-            </Link>
+            </button>
           </li>
         </ul>
       </div>

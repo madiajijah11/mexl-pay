@@ -1,9 +1,22 @@
 import Image from "next/image";
 import { Icon } from "@iconify-icon/react";
+import { getProfile } from "../redux/actions/profileAction";
+import { useDispatch, useSelector } from "react-redux";
 
 import ProfilePicture from "../images/review.png";
+import { useEffect } from "react";
 
 export default function NavbarHome() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const { userInfo } = useSelector((state) => state.profile);
+
+  useEffect(() => {
+    if (token !== null) {
+      dispatch(getProfile());
+    }
+  }, [dispatch, token]);
+
   return (
     <nav className="navbar bg-neutral py-6 px-40 rounded-b-xl shadow-xl">
       <div className="navbar-start">
@@ -13,11 +26,22 @@ export default function NavbarHome() {
       </div>
       <div className="navbar-end gap-2">
         <div className="w-10 rounded-md">
-          <Image src={ProfilePicture} alt="profile" width={50} height={50} />
+          {userInfo && userInfo?.picture ? (
+            <Image
+              src={userInfo.picture}
+              alt="profile"
+              width={50}
+              height={50}
+            />
+          ) : (
+            <Image src={ProfilePicture} alt="profile" width={50} height={50} />
+          )}
         </div>
         <div className="mr-5">
-          <div className="font-bold">Robert Chandler</div>
-          <div>+6282256964453</div>
+          <div className="font-bold">
+            {userInfo?.firstName} {userInfo?.lastName}
+          </div>
+          <div>{userInfo?.phoneNumber}</div>
         </div>
         <ul className="menu menu-horizontal px-1">
           <li tabIndex={0}>

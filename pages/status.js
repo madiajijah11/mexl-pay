@@ -5,6 +5,7 @@ import FooterHome from "../components/footerHome";
 import Image from "next/image";
 import HomeMenu from "../components/homeMenu";
 import ProfilePicture from "../images/review.png";
+import IsLogin from "../components/IsLogin";
 
 const StatusContent = () => (
   <section>
@@ -70,7 +71,7 @@ const StatusContent = () => (
   </section>
 );
 
-export default function Status() {
+function Status() {
   return (
     <>
       <Head>
@@ -84,3 +85,5 @@ export default function Status() {
     </>
   );
 }
+
+export default IsLogin(Status);

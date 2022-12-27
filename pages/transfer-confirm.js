@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
+import IsLogin from "../components/IsLogin";
 
 YupPassword(Yup);
 
@@ -178,7 +179,7 @@ const Transfer = () => {
   );
 };
 
-export default function TransferConfirm() {
+function TransferConfirm() {
   return (
     <>
       <Head>
@@ -192,3 +193,5 @@ export default function TransferConfirm() {
     </>
   );
 }
+
+export default IsLogin(TransferConfirm);

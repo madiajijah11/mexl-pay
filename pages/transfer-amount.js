@@ -4,6 +4,7 @@ import FooterHome from "../components/footerHome";
 import Image from "next/image";
 import HomeMenu from "../components/homeMenu";
 import ProfilePicture from "../images/review.png";
+import IsLogin from "../components/IsLogin";
 
 const Transfer = () => (
   <section>
@@ -46,7 +47,7 @@ const Transfer = () => (
   </section>
 );
 
-export default function TransferAmount() {
+function TransferAmount() {
   return (
     <>
       <Head>
@@ -60,3 +61,5 @@ export default function TransferAmount() {
     </>
   );
 }
+
+export default IsLogin(TransferAmount);

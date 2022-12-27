@@ -7,6 +7,7 @@ import Graph from "../images/expenses.png";
 import Image from "next/image";
 import Netflix from "../images/netflix.png";
 import HomeMenu from "../components/homeMenu";
+import IsLogin from "../components/IsLogin";
 
 const HomeContent = () => (
   <section>
@@ -93,7 +94,7 @@ const HomeContent = () => (
   </section>
 );
 
-export default function Home() {
+function Home() {
   return (
     <>
       <Head>
@@ -107,3 +108,5 @@ export default function Home() {
     </>
   );
 }
+
+export default IsLogin(Home);

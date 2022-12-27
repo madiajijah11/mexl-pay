@@ -2,6 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { Icon } from "@iconify-icon/react";
 import Link from "next/link";
+import { useSelector, useDispatch } from "react-redux";
 
 import PhoneImage from "../images/png-phone.png";
 import Sponsors from "../images/Group-51.png";
@@ -9,29 +10,58 @@ import PhoneImage1 from "../images/png-phone2.png";
 import PhoneImage2 from "../images/png-phone3.png";
 import User1 from "../images/review.png";
 
-const Nav = () => (
-  <nav className="navbar py-2 px-4">
-    <div className="navbar-start">
-      {/* <figure className="w-12 h-12">
+import { logout } from "../redux/reducers/authReducer";
+
+const Nav = ({ auth }) => {
+  const dispatch = useDispatch();
+  return (
+    <nav className="navbar py-2 px-4">
+      <div className="navbar-start">
+        {/* <figure className="w-12 h-12">
         <Image src={Logo} alt="MexL Pay" width={200} height={200} />
       </figure> */}
-      <div className="text-secondary font-bold text-2xl btn glass btn-disabled">
-        MexL Pay
+        <div className="text-secondary font-bold text-2xl btn glass btn-disabled">
+          MexL Pay
+        </div>
       </div>
-    </div>
-    <div className="navbar-end gap-5">
-      <Link
-        href="/login"
-        className="btn btn-secondary btn-outline font-bold py-2 px-4"
-      >
-        Login
-      </Link>
-      <Link href="/register" className="btn btn-secondary font-bold py-2 px-4">
-        Sign Up
-      </Link>
-    </div>
-  </nav>
-);
+      <div className="navbar-end gap-5">
+        {auth?.token ? (
+          <>
+            <Link
+              href="/home"
+              className="btn btn-secondary font-bold py-2 px-4"
+            >
+              Home
+            </Link>
+            <button
+              className="btn btn-secondary font-bold py-2 px-4"
+              onClick={() => {
+                dispatch(logout());
+              }}
+            >
+              logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link
+              href="/login"
+              className="btn btn-secondary btn-outline font-bold py-2 px-4"
+            >
+              Login
+            </Link>
+            <Link
+              href="/register"
+              className="btn btn-secondary font-bold py-2 px-4"
+            >
+              Sign Up
+            </Link>
+          </>
+        )}
+      </div>
+    </nav>
+  );
+};
 
 const FirstSection = () => (
   <section>
@@ -224,6 +254,8 @@ const Footer = () => (
 );
 
 export default function Home() {
+  const { auth } = useSelector((state) => state);
+
   return (
     <>
       <Head>
@@ -232,7 +264,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Nav />
+      <Nav auth={auth} />
       <FirstSection />
       <Sponsor />
       <SecondSection />

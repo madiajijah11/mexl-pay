@@ -6,7 +6,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
-import { Icon } from "@iconify-icon/react";
+import IsLogin from "../components/IsLogin";
+import { useSelector } from "react-redux";
+import { axiosInstance } from "../helpers/axios.helper";
+import { useState } from "react";
 
 YupPassword(Yup);
 
@@ -20,6 +23,11 @@ const ChangePinSchema = Yup.object().shape({
 });
 
 const ChangePasswordContent = () => {
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { token } = useSelector((state) => state.auth);
+
   const {
     register,
     handleSubmit,
@@ -37,7 +45,28 @@ const ChangePasswordContent = () => {
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      const pin = `${data.pin1}${data.pin2}${data.pin3}${data.pin4}${data.pin5}${data.pin6}`;
+      const res = await axiosInstance.post("/profile/change-pin", pin, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.data.success === true) {
+        setIsError(false);
+        setIsSuccess(true);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      if (error) {
+        setIsLoading(false);
+        setIsError(true);
+        setIsSuccess(false);
+      }
+    }
+  };
 
   return (
     <section>
@@ -55,6 +84,14 @@ const ChangePasswordContent = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col w-1/3 mt-10 gap-10"
               >
+                {isError && (
+                  <span className="text-error mt-2">Failed to change PIN</span>
+                )}
+                {isSuccess && (
+                  <span className="text-success mt-2">
+                    PIN changed successfully
+                  </span>
+                )}
                 <div className="w-full flex gap-5">
                   <input
                     name="pin1"
@@ -110,7 +147,7 @@ const ChangePasswordContent = () => {
                 <button
                   type="submit"
                   className="btn btn-primary w-full"
-                  disabled={!isDirty || !isValid}
+                  disabled={!isDirty || !isValid || isLoading}
                 >
                   Continue
                 </button>
@@ -123,7 +160,7 @@ const ChangePasswordContent = () => {
   );
 };
 
-export default function ChangePin() {
+function ChangePin() {
   return (
     <>
       <Head>
@@ -137,3 +174,5 @@ export default function ChangePin() {
     </>
   );
 }
+
+export default IsLogin(ChangePin);

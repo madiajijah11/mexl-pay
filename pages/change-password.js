@@ -8,6 +8,9 @@ import * as Yup from "yup";
 import YupPassword from "yup-password";
 import { Icon } from "@iconify-icon/react";
 import { useState } from "react";
+import IsLogin from "../components/IsLogin";
+import { useSelector } from "react-redux";
+import { axiosInstance } from "../helpers/axios.helper";
 
 YupPassword(Yup);
 
@@ -30,7 +33,7 @@ const ChangePasswordSchema = Yup.object().shape({
     .minUppercase(1)
     .minNumbers(1)
     .minSymbols(1),
-  confirmNewPassword: Yup.string()
+  confirmPassword: Yup.string()
     .min(8)
     .max(16)
     .required()
@@ -42,7 +45,12 @@ const ChangePasswordSchema = Yup.object().shape({
 });
 
 const ChangePasswordContent = () => {
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { token } = useSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const {
     register,
@@ -54,11 +62,32 @@ const ChangePasswordContent = () => {
     defaultValues: {
       currentPassword: "",
       newPassword: "",
-      confirmNewPassword: "",
+      confirmPassword: "",
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      const res = await axiosInstance.post("/profile/change-password", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.data.success === true) {
+        setIsError(false);
+        setIsSuccess(true);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      if (error) {
+        setIsError(true);
+        setErrorMsg(error.response.data.message);
+        setIsSuccess(false);
+        setIsLoading(false);
+      }
+    }
+  };
 
   const showingPassword = () => {
     setShowPassword(!showPassword);
@@ -79,6 +108,12 @@ const ChangePasswordContent = () => {
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col items-center gap-5 mt-10"
             >
+              {isError && <span className="text-error mt-2">{errorMsg}</span>}
+              {isSuccess && (
+                <span className="text-success mt-2">
+                  Password changed successfully
+                </span>
+              )}
               <div className="w-1/3 input-group relative">
                 <span>
                   <Icon icon="mdi:lock" width="35" height="35" />
@@ -169,22 +204,22 @@ const ChangePasswordContent = () => {
                   />
                 )}
                 <input
-                  name="confirmNewPassword"
+                  name="confirmPassword"
                   type={showPassword ? "text" : "password"}
                   placeholder="Repeat your password"
                   className="input input-bordered input-primary w-full"
-                  {...register("confirmNewPassword", { required: true })}
+                  {...register("confirmPassword", { required: true })}
                 />
               </div>
-              {errors.confirmNewPassword && (
+              {errors.confirmPassword && (
                 <span className="text-error mt-2">
-                  {errors.confirmNewPassword?.message}
+                  {errors.confirmPassword?.message}
                 </span>
               )}
               <button
                 type="submit"
                 className="btn btn-primary w-1/3"
-                disabled={!isDirty || !isValid}
+                disabled={!isDirty || !isValid || isLoading}
               >
                 Change Password
               </button>
@@ -196,7 +231,7 @@ const ChangePasswordContent = () => {
   );
 };
 
-export default function ChangePassword() {
+function ChangePassword() {
   return (
     <>
       <Head>
@@ -210,3 +245,5 @@ export default function ChangePassword() {
     </>
   );
 }
+
+export default IsLogin(ChangePassword);

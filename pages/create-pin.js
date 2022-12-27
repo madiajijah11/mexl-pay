@@ -4,8 +4,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { axiosInstance } from "../helpers/axios.helper";
+import jwtDecode from "jwt-decode";
 
 import PhoneImage from "../images/Group-57.png";
+import { useState } from "react";
 
 YupPassword(Yup);
 
@@ -19,6 +24,14 @@ const PinSchema = Yup.object().shape({
 });
 
 export default function CreatePin() {
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter();
+  const token = useSelector((state) => state?.auth?.token);
+  const { id } = jwtDecode(token);
+
   const {
     register,
     handleSubmit,
@@ -36,7 +49,28 @@ export default function CreatePin() {
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      const pin = `${data.pin1}${data.pin2}${data.pin3}${data.pin4}${data.pin5}${data.pin6}`;
+      const createPIN = await axiosInstance.post("auth/set-pin", {
+        userId: id,
+        pin,
+      });
+      if (createPIN.data.success === true) {
+        setIsError(false);
+        setIsSuccess(true);
+        setIsLoading(false);
+      }
+      router.push("/home");
+    } catch (error) {
+      if (error) {
+        setIsError(true);
+        setIsSuccess(false);
+        setIsLoading(false);
+      }
+    }
+  };
 
   return (
     <>
@@ -81,6 +115,16 @@ export default function CreatePin() {
               Pay app. Keep it secret and don’t tell anyone about your MexL Pay
               account password and the PIN.
             </p>
+            {isError && (
+              <div className="text-error font-bold text-center">
+                Network Error, Please Try Again
+              </div>
+            )}
+            {isSuccess && (
+              <div className="text-success font-bold text-center">
+                PIN Created Successfully
+              </div>
+            )}
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-10"
@@ -140,7 +184,7 @@ export default function CreatePin() {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={!isDirty || !isValid}
+                disabled={!isDirty || !isValid || isLoading}
               >
                 Confirm
               </button>

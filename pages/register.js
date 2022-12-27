@@ -5,14 +5,19 @@ import { Icon } from "@iconify-icon/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+
+import { register as registerAction } from "../redux/actions/authAction";
 
 import PhoneImage from "../images/Group-57.png";
 import { useState } from "react";
 import Link from "next/link";
+import IsNotLogin from "../components/isNotLogin";
 
 YupPassword(Yup);
 
-const RegisterSchema = Yup.object().shape({
+const RegisterSchema = Yup.object({
   firstName: Yup.string().required(),
   lastName: Yup.string().required(),
   email: Yup.string().email().required(),
@@ -25,10 +30,15 @@ const RegisterSchema = Yup.object().shape({
     .minUppercase(1)
     .minNumbers(1)
     .minSymbols(1),
-});
+}).required();
 
-export default function Register() {
+function Register() {
+  const { auth } = useSelector((state) => state);
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -45,7 +55,9 @@ export default function Register() {
     },
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    dispatch(registerAction({ ...data, cb: () => router.push("/create-pin") }));
+  };
 
   const showingPassword = () => {
     setShowPassword(!showPassword);
@@ -94,6 +106,18 @@ export default function Register() {
               wherever you are. Desktop, laptop, mobile phone? we cover all of
               that for you!
             </p>
+            {auth.error &&
+              auth.error ===
+                `duplicate key value violates unique constraint "users_email_key"` && (
+                <div className="text-error font-bold text-center">
+                  Email already registered
+                </div>
+              )}
+            {auth.success && (
+              <div className="text-success font-bold text-center">
+                Register Success
+              </div>
+            )}
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-10"
@@ -112,7 +136,7 @@ export default function Register() {
                     type="text"
                     placeholder="Enter your first name"
                     className="input input-bordered input-primary w-full"
-                    {...register("firstName", { required: true })}
+                    {...register("firstName")}
                   />
                 </div>
                 {errors.firstName && (
@@ -135,7 +159,7 @@ export default function Register() {
                     type="text"
                     placeholder="Enter your last name"
                     className="input input-bordered input-primary w-full"
-                    {...register("lastName", { required: true })}
+                    {...register("lastName")}
                   />
                 </div>
                 {errors.lastName && (
@@ -154,7 +178,7 @@ export default function Register() {
                     type="text"
                     placeholder="Enter your e-mail"
                     className="input input-bordered input-primary w-full"
-                    {...register("email", { required: true })}
+                    {...register("email")}
                   />
                 </div>
                 {errors.email && (
@@ -190,7 +214,7 @@ export default function Register() {
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     className="input input-bordered input-primary w-full"
-                    {...register("password", { required: true })}
+                    {...register("password")}
                   />
                 </div>
                 {errors.password && (
@@ -202,7 +226,7 @@ export default function Register() {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={!isDirty || !isValid}
+                disabled={!isDirty || !isValid || auth?.loading}
               >
                 Register
               </button>
@@ -219,3 +243,5 @@ export default function Register() {
     </>
   );
 }
+
+export default IsNotLogin(Register);

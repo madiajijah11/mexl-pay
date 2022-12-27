@@ -4,6 +4,7 @@ import FooterHome from "../components/footerHome";
 import Image from "next/image";
 import Netflix from "../images/netflix.png";
 import HomeMenu from "../components/homeMenu";
+import IsLogin from "../components/IsLogin";
 
 const HistoryContent = () => (
   <section>
@@ -37,7 +38,7 @@ const HistoryContent = () => (
   </section>
 );
 
-export default function History() {
+function History() {
   return (
     <>
       <Head>
@@ -51,3 +52,5 @@ export default function History() {
     </>
   );
 }
+
+export default IsLogin(History);
