@@ -7,7 +7,7 @@ import Graph from "../images/expenses.png";
 import Image from "next/image";
 import Netflix from "../images/netflix.png";
 import HomeMenu from "../components/homeMenu";
-import IsLogin from "../components/IsLogin";
+import IsLogin from "../components/isLogin";
 
 const HomeContent = () => (
   <section>

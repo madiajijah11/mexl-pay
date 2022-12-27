@@ -8,7 +8,7 @@ import * as Yup from "yup";
 import YupPassword from "yup-password";
 import { Icon } from "@iconify-icon/react";
 import { useState } from "react";
-import IsLogin from "../components/IsLogin";
+import IsLogin from "../components/isLogin";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../helpers/axios.helper";
 
