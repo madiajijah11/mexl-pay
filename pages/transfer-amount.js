@@ -4,7 +4,7 @@ import FooterHome from "../components/footerHome";
 import Image from "next/image";
 import HomeMenu from "../components/homeMenu";
 import ProfilePicture from "../images/review.png";
-import IsLogin from "../components/IsLogin";
+import IsLogin from "../components/isLogin";
 
 const Transfer = () => (
   <section>

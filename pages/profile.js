@@ -7,7 +7,7 @@ import HomeMenu from "../components/homeMenu";
 import ProfilePicture from "../images/review.png";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-import IsLogin from "../components/IsLogin";
+import IsLogin from "../components/isLogin";
 import { logout } from "../redux/reducers/authReducer";
 import { axiosInstance } from "../helpers/axios.helper";
 import { getProfile } from "../redux/actions/profileAction";

@@ -3,7 +3,7 @@ import NavbarHome from "../components/navbarHome";
 import FooterHome from "../components/footerHome";
 import HomeMenu from "../components/homeMenu";
 import Link from "next/link";
-import IsLogin from "../components/IsLogin";
+import IsLogin from "../components/isLogin";
 import { useSelector } from "react-redux";
 
 const PersonalInformationContent = ({ userInfo }) => (

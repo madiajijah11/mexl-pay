@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import YupPassword from "yup-password";
-import IsLogin from "../components/IsLogin";
+import IsLogin from "../components/isLogin";
 
 YupPassword(Yup);
 
