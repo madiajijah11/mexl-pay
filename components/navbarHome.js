@@ -11,6 +11,8 @@ export default function NavbarHome() {
   const token = useSelector((state) => state.auth.token);
   const { userInfo } = useSelector((state) => state.profile);
 
+  const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL;
+
   useEffect(() => {
     if (token !== null) {
       dispatch(getProfile());
@@ -28,7 +30,7 @@ export default function NavbarHome() {
         <div className="w-10 rounded-md">
           {userInfo && userInfo?.picture ? (
             <Image
-              src={userInfo.picture}
+              src={imgURL + userInfo.picture}
               alt="profile"
               width={50}
               height={50}

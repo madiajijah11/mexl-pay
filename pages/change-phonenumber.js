@@ -64,10 +64,10 @@ const ChangePhoneNumberContent = () => {
         <HomeMenu />
         <div className="w-full flex flex-col gap-5 bg-neutral p-10 rounded-box shadow-xl">
           <div className="flex flex-col gap-10 py-5">
-            <div className="font-bold">Change Password</div>
+            <div className="font-bold">Edit Phone Number</div>
             <p className="w-1/3">
-              You must enter your current password and then type your new
-              password twice.
+              Add at least one phone number for the transfer ID so you can start
+              transfering your money to another user.
             </p>
             <form
               onSubmit={handleSubmit(onSubmit)}

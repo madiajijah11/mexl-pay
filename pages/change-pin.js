@@ -49,11 +49,15 @@ const ChangePasswordContent = () => {
     try {
       setIsLoading(true);
       const pin = `${data.pin1}${data.pin2}${data.pin3}${data.pin4}${data.pin5}${data.pin6}`;
-      const res = await axiosInstance.post("/profile/change-pin", pin, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axiosInstance.post(
+        "/profile/change-pin",
+        { newPin: pin },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (res.data.success === true) {
         setIsError(false);
         setIsSuccess(true);
@@ -74,10 +78,10 @@ const ChangePasswordContent = () => {
         <HomeMenu />
         <div className="w-full flex flex-col gap-5 bg-neutral p-10 rounded-box shadow-xl">
           <div className="flex flex-col gap-10 py-5">
-            <div className="font-bold">Change Password</div>
+            <div className="font-bold">Change PIN</div>
             <p className="w-1/3">
-              You must enter your current password and then type your new
-              password twice.
+              Enter your current 6 digits MexL Pay PIN below to continue to the
+              next steps.
             </p>
             <div className="w-full items-center justify-center flex">
               <form
