@@ -8,7 +8,7 @@ import YupPassword from "yup-password";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/actions/authAction";
 import PhoneImage from "../images/Group-57.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import IsNotLogin from "../components/isNotLogin";
 
@@ -29,7 +29,7 @@ const LoginSchema = Yup.object().shape({
 
 function Login() {
   const { isError, isSuccess, isLoading } = useSelector((state) => state.auth);
-
+  const { token } = useSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
 
@@ -50,14 +50,11 @@ function Login() {
     dispatch(login({ ...data }));
   };
 
-  if (
-    isSuccess === true &&
-    router.pathname === "/login" &&
-    !isLoading &&
-    !isError
-  ) {
-    router.push("/home");
-  }
+  useEffect(() => {
+    if (token) {
+      Router.push("/home");
+    }
+  }, [token]);
 
   const showingPassword = () => {
     setShowPassword(!showPassword);

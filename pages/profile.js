@@ -71,6 +71,7 @@ const ProfileContent = ({ userInfo }) => {
                 alt="Profile"
                 width={80}
                 height={80}
+                className="rounded-lg w-[80px] h-[80px]"
               />
             ) : (
               <Image
@@ -78,6 +79,7 @@ const ProfileContent = ({ userInfo }) => {
                 alt="Profile"
                 width={80}
                 height={80}
+                className="rounded-lg w-[80px] h-[80px]"
               />
             )}
             <input

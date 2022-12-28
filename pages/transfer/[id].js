@@ -65,6 +65,7 @@ const Transfer = ({ receiver }) => {
                   alt="ProfilePicture"
                   width={70}
                   height={70}
+                  className="rounded-lg w-[70px] h-[70px]"
                 />
               ) : (
                 <Image
@@ -72,6 +73,7 @@ const Transfer = ({ receiver }) => {
                   alt="ProfilePicture"
                   width={70}
                   height={70}
+                  className="rounded-lg w-[70px] h-[70px]"
                 />
               )}
               <div className="flex flex-col justify-center gap-2">
@@ -98,7 +100,11 @@ const Transfer = ({ receiver }) => {
               {...register("amount")}
             />
             <div className="font-bold">
-              Rp{userInfo?.balance === 0 ? 0 : userInfo?.balance} Available
+              Rp
+              {userInfo?.balance === 0
+                ? Number(0).toLocaleString("id")
+                : Number(userInfo?.balance).toLocaleString("id")}{" "}
+              Available
             </div>
             <textarea
               type="text"

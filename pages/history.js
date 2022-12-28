@@ -5,38 +5,101 @@ import Image from "next/image";
 import Netflix from "../images/netflix.png";
 import HomeMenu from "../components/homeMenu";
 import IsLogin from "../components/isLogin";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { axiosInstance } from "../helpers/axios.helper";
 
-const HistoryContent = () => (
-  <section>
-    <div className="px-40 py-20 flex gap-5">
-      <HomeMenu />
-      <div className="w-full flex flex-col gap-5 bg-neutral p-10 rounded-box shadow-xl">
-        <div className="flex justify-between">
-          <div className="font-bold">Transaction History</div>
-          <div>
-            <select className="select w-full max-w-xs">
-              <option disabled selected>
-                -- Select Filter --
-              </option>
-            </select>
-          </div>
-        </div>
-        <div className="flex flex-col gap-5">
-          <div className="flex gap-5 justify-between items-center">
-            <div className="flex gap-4">
-              <Image src={Netflix} alt="netflix" width={70} height={70} />
-              <div className="flex flex-col justify-center gap-2">
-                <div className="font-bold">Netflix</div>
-                <div>Transfer</div>
-              </div>
+const HistoryContent = () => {
+  const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL;
+  const { userInfo } = useSelector((state) => state.profile);
+  const [transactions, setTransactions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const token = useSelector((state) => state.auth.token);
+
+  useEffect(() => {
+    const getTransactionHistory = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axiosInstance.get(
+          "transactions?page=1&limit=5",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setTransactions(response.data.results);
+        setIsLoading(false);
+      } catch (error) {
+        setIsError(true);
+        setIsLoading(false);
+      }
+    };
+    getTransactionHistory();
+  }, [token]);
+  return (
+    <section>
+      <div className="px-40 py-20 flex gap-5">
+        <HomeMenu />
+        <div className="w-full flex flex-col gap-5 bg-neutral p-10 rounded-box shadow-xl">
+          <div className="flex justify-between">
+            <div className="font-bold">Transaction History</div>
+            <div>
+              <select className="select w-full max-w-xs">
+                <option disabled selected>
+                  -- Select Filter --
+                </option>
+              </select>
             </div>
-            <div className="font-bold text-red-700">-Rp149.000</div>
+          </div>
+          <div className="flex flex-col gap-5">
+            {isLoading && (
+              <progress className="progress progress-primary w-56"></progress>
+            )}
+            {transactions?.map((transaction) => (
+              <div
+                className="flex gap-5 justify-between items-center"
+                key={transaction.id}
+              >
+                <div className="flex gap-4">
+                  {transaction?.recipientPicture ? (
+                    <Image
+                      src={imgURL + transaction.recipientPicture}
+                      alt="ProfilePicture"
+                      width={70}
+                      height={70}
+                    />
+                  ) : (
+                    <Image
+                      src={Netflix}
+                      alt="ProfilePicture"
+                      width={70}
+                      height={70}
+                    />
+                  )}
+                  <div className="flex flex-col justify-center gap-2">
+                    <div className="font-bold">{transaction.recipientname}</div>
+                    <div>{transaction.notes}</div>
+                  </div>
+                </div>
+                <div
+                  className={
+                    transaction.recipientId === userInfo?.id
+                      ? "text-green-500 font-bold"
+                      : "text-red-500 font-bold"
+                  }
+                >
+                  {transaction.amount}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 function History() {
   return (

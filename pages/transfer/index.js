@@ -21,7 +21,7 @@ const ReceiverList = () => {
   const getReceiverList = async () => {
     try {
       const response = await axiosInstance.get(
-        "/transactions/recipient?page=1&limit=5",
+        "/transactions/recipient?page=1&limit=50",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -69,6 +69,7 @@ const ReceiverList = () => {
                     alt="ProfilePicture"
                     width={70}
                     height={70}
+                    className="rounded-lg w-[70px] h-[70px]"
                   />
                 ) : (
                   <Image
@@ -76,6 +77,7 @@ const ReceiverList = () => {
                     alt="ProfilePicture"
                     width={70}
                     height={70}
+                    className="rounded-lg w-[70px] h-[70px]"
                   />
                 )}
                 <div className="flex flex-col justify-center gap-2">

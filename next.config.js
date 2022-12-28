@@ -4,15 +4,6 @@ const nextConfig = {
   images: {
     domains: ["68xkph-8888.preview.csb.app"],
   },
-  redirects: async () => {
-    return [
-      {
-        source: "/register",
-        destination: "/create-pin",
-        permanent: true,
-      },
-    ];
-  }
 };
 
 module.exports = nextConfig;

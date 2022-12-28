@@ -11,14 +11,12 @@ import User1 from "../images/review.png";
 
 import { logout } from "../redux/reducers/authReducer";
 
-const Nav = ({ auth }) => {
+const Nav = () => {
   const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state);
   return (
     <nav className="navbar py-2 px-4">
       <div className="navbar-start">
-        {/* <figure className="w-12 h-12">
-        <Image src={Logo} alt="MexL Pay" width={200} height={200} />
-      </figure> */}
         <div className="text-secondary font-bold text-2xl btn glass btn-disabled">
           MexL Pay
         </div>
@@ -253,8 +251,6 @@ const Footer = () => (
 );
 
 export default function Home() {
-  const { auth } = useSelector((state) => state);
-
   return (
     <>
       <Head>
@@ -263,7 +259,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Nav auth={auth} />
+      <Nav />
       <FirstSection />
       <Sponsor />
       <SecondSection />

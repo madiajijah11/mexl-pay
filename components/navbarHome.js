@@ -16,25 +16,24 @@ export default function NavbarHome() {
 
   const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL;
 
-  const fetchNotification = async () => {
-    try {
-      const response = await axiosInstance.get(
-        "transactions/notification?page=1&limit=5",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      setNotifications(response.data.results);
-      setIsLoading(false);
-    } catch (error) {
-      setIsError(true);
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchNotification = async () => {
+      try {
+        const response = await axiosInstance.get(
+          "transactions/notification?page=1&limit=5",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setNotifications(response.data.results);
+        setIsLoading(false);
+      } catch (error) {
+        setIsError(true);
+        setIsLoading(false);
+      }
+    };
     if (token !== null) {
       dispatch(getProfile());
       fetchNotification();
@@ -49,16 +48,23 @@ export default function NavbarHome() {
         </div>
       </div>
       <div className="navbar-end gap-2">
-        <div className="w-10 rounded-md">
+        <div className="w-[50px] h-[50px]">
           {userInfo && userInfo?.picture ? (
             <Image
               src={imgURL + userInfo.picture}
               alt="profile"
               width={50}
               height={50}
+              className="rounded-lg w-[50px] h-[50px]"
             />
           ) : (
-            <Image src={ProfilePicture} alt="profile" width={50} height={50} />
+            <Image
+              src={ProfilePicture}
+              alt="profile"
+              width={50}
+              height={50}
+              className="rounded-lg w-[50px] h-[50px]"
+            />
           )}
         </div>
         <div className="mr-5">

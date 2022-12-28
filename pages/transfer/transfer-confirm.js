@@ -12,8 +12,8 @@ import IsLogin from "../../components/isLogin";
 import { axiosInstance } from "../../helpers/axios.helper";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { confirmPin } from "../../redux/reducers/transactionReducer";
 import { transfer } from "../../redux/actions/transactionAction";
+import { useRouter } from "next/router";
 
 YupPassword(Yup);
 
@@ -35,6 +35,7 @@ const Transfer = () => {
   );
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const getRecipient = async () => {
     const response = await axiosInstance.get(
@@ -72,6 +73,7 @@ const Transfer = () => {
   const onSubmit = (data) => {
     const transferPin = `${data.pin1}${data.pin2}${data.pin3}${data.pin4}${data.pin5}${data.pin6}`;
     dispatch(transfer({ amount, recipientId, notes, pin: transferPin }));
+    router.push("/status");
   };
 
   return (
@@ -88,6 +90,7 @@ const Transfer = () => {
                   alt="ProfilePicture"
                   width={70}
                   height={70}
+                  className="rounded-lg w-[70px] h-[70px]"
                 />
               ) : (
                 <Image
@@ -95,6 +98,7 @@ const Transfer = () => {
                   alt="ProfilePicture"
                   width={70}
                   height={70}
+                  className="rounded-lg w-[70px] h-[70px]"
                 />
               )}
 
@@ -110,14 +114,16 @@ const Transfer = () => {
           <div className="flex gap-5 items-center rounded-box bg-base-100 shadow-xl p-5">
             <div className="flex flex-col justify-center gap-2">
               <div>Amount</div>
-              <div className="font-bold text-xl">Rp{amount}</div>
+              <div className="font-bold text-xl">
+                Rp{Number(amount).toLocaleString("id")}
+              </div>
             </div>
           </div>
           <div className="flex gap-5 items-center rounded-box bg-base-100 shadow-xl p-5">
             <div className="flex flex-col justify-center gap-2">
               <div>Balance Left</div>
               <div className="font-bold text-xl">
-                Rp{userInfo?.balance - amount}
+                Rp{Number(userInfo?.balance - amount).toLocaleString("id")}
               </div>
             </div>
           </div>
@@ -136,7 +142,11 @@ const Transfer = () => {
             </div>
           </div>
           <div className="w-full justify-end flex">
-            <label htmlFor="continue" className="btn btn-primary">
+            <label
+              htmlFor="continue"
+              className="btn btn-primary"
+              disabled={userInfo?.balance - amount < 0}
+            >
               Continue
             </label>
           </div>
