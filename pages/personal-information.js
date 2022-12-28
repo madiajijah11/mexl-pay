@@ -35,7 +35,7 @@ const PersonalInformationContent = ({ userInfo }) => (
                 <p>Phone Number</p>
                 <div className="font-bold text-xl">{userInfo.phoneNumber}</div>
               </div>
-              <Link href="/change-phonenumber" className="text-secondary">
+              <Link href="/change-phone-number" className="text-secondary">
                 Manage
               </Link>
             </div>

@@ -3,10 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import { login, register } from "../actions/authAction";
 
 const initialState = {
-  loading: false,
+  isLoading: false,
   token: null,
-  error: null,
-  success: false,
+  isError: null,
+  isSuccess: false,
 };
 
 const authSlice = createSlice({
@@ -14,38 +14,38 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state, action) => {
+      state.isLoading = false;
       state.token = null;
-      state.loading = false;
-      state.error = null;
-      state.success = false;
+      state.isError = null;
+      state.isSuccess = false;
     },
   },
   extraReducers: (build) => {
     build.addCase(login.pending, (state, action) => {
-      state.loading = true;
+      state.isLoading = true;
     });
     build.addCase(login.rejected, (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
+      state.isError = action.payload;
+      state.isLoading = false;
     });
     build.addCase(login.fulfilled, (state, action) => {
       state.token = action.payload;
-      state.error = null;
-      state.loading = false;
-      state.success = true;
+      state.isError = null;
+      state.isLoading = false;
+      state.isSuccess = true;
     });
     build.addCase(register.pending, (state, action) => {
-      state.loading = true;
+      state.isLoading = true;
     });
     build.addCase(register.rejected, (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
+      state.isError = action.payload;
+      state.isLoading = false;
     });
     build.addCase(register.fulfilled, (state, action) => {
       state.token = action.payload;
-      state.error = null;
-      state.loading = false;
-      state.success = true;
+      state.isError = null;
+      state.isLoading = false;
+      state.isSuccess = true;
     });
   },
 });

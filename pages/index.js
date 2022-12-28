@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Icon } from "@iconify-icon/react";
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
-
 import PhoneImage from "../images/png-phone.png";
 import Sponsors from "../images/Group-51.png";
 import PhoneImage1 from "../images/png-phone2.png";

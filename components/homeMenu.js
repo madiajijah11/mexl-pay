@@ -1,10 +1,62 @@
 import { Icon } from "@iconify-icon/react";
 import Link from "next/link";
 import { logout } from "../redux/reducers/authReducer";
-import { useDispatch } from "react-redux";
+import { axiosInstance } from "../helpers/axios.helper";
+import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import YupPassword from "yup-password";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfile } from "../redux/actions/profileAction";
+import { useState } from "react";
+
+YupPassword(Yup);
+
+const TopUpSchema = Yup.object().shape({
+  amount: Yup.number().required().positive().integer(),
+});
 
 export default function HomeMenu() {
   const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
+  const [isError, setIsError] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isDirty, isValid },
+  } = useForm({
+    mode: "onChange",
+    resolver: yupResolver(TopUpSchema),
+    defaultValues: {
+      amount: "",
+    },
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      const newAmount = parseInt(data.amount);
+      await axiosInstance.post(
+        "/transactions/topup",
+        { amount: newAmount },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      dispatch(getProfile());
+      setIsSuccess(true);
+      setIsLoading(false);
+    } catch (error) {
+      setIsError(true);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="bg-neutral rounded-box flex flex-col justify-between shadow-xl w-60 p-2">
       <ul className="menu">
@@ -70,12 +122,28 @@ export default function HomeMenu() {
           </label>
           <h3 className="text-lg font-bold">Top Up</h3>
           <p className="py-4">Enter the amount of money, and click submit</p>
-          <input type="text" className="input input-bordered w-full" />
-          <div className="modal-action">
-            <button type="submit" className="btn btn-primary">
-              Confirm
-            </button>
-          </div>
+          {isError && <span className="text-error">Something went wrong</span>}
+          {isSuccess && <span className="text-success">Top up success</span>}
+          {errors.amount && (
+            <span className="text-error">{errors.amount.message}</span>
+          )}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input
+              type="text"
+              className="input input-bordered w-full"
+              name="amount"
+              {...register("amount")}
+            />
+            <div className="modal-action">
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={!isDirty || !isValid || isLoading}
+              >
+                Confirm
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

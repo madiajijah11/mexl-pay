@@ -1,4 +1,3 @@
-import { Icon } from "@iconify-icon/react";
 import Head from "next/head";
 import NavbarHome from "../components/navbarHome";
 import FooterHome from "../components/footerHome";
@@ -6,21 +5,14 @@ import Image from "next/image";
 import HomeMenu from "../components/homeMenu";
 import ProfilePicture from "../images/review.png";
 import IsLogin from "../components/isLogin";
+import { useRouter } from "next/router";
 
-const ReceiverList = () => (
+const Transfer = () => (
   <section>
     <div className="px-40 py-20 flex gap-5">
       <HomeMenu />
       <div className="w-full flex flex-col gap-5 bg-neutral p-10 rounded-box shadow-xl">
-        <div className="font-bold">Search Receiver</div>
-        <div className="input-group bg-base-100 flex items-center rounded-box px-4 py-2 gap-2">
-          <Icon icon="ic:baseline-search" width="40" height="40" />
-          <input
-            type="text"
-            className="input w-full"
-            placeholder="Search Receiver"
-          />
-        </div>
+        <div className="font-bold">Transfer Money</div>
         <div className="flex gap-5 items-center rounded-box bg-base-100 shadow-xl p-5">
           <div className="flex gap-4">
             <Image src={ProfilePicture} alt="netflix" width={70} height={70} />
@@ -30,12 +22,35 @@ const ReceiverList = () => (
             </div>
           </div>
         </div>
+        <p>
+          Type the amount you want to transfer and then press continue to the
+          next steps.
+        </p>
+        <div className="flex flex-col items-center justify-center gap-5">
+          <input
+            type="text"
+            className="input input-lg text-center"
+            placeholder="0.00"
+          />
+          <div className="font-bold">Rp120.000 Available</div>
+          <textarea
+            type="text"
+            className="input"
+            placeholder="Add some notes"
+            cols={50}
+          />
+        </div>
+        <div className="w-full justify-end flex">
+          <button className="btn btn-primary">Continue</button>
+        </div>
       </div>
     </div>
   </section>
 );
 
-function Transfer() {
+function TransferAmount() {
+  const router = useRouter();
+
   return (
     <>
       <Head>
@@ -44,10 +59,10 @@ function Transfer() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavbarHome />
-      <ReceiverList />
+      <Transfer />
       <FooterHome />
     </>
   );
 }
 
-export default IsLogin(Transfer);
+export default IsLogin(TransferAmount);

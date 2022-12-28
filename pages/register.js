@@ -33,7 +33,7 @@ const RegisterSchema = Yup.object({
 }).required();
 
 function Register() {
-  const { error, success, loading } = useSelector((state) => state.auth);
+  const { isError, isSuccess, isLoading } = useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -56,8 +56,17 @@ function Register() {
   });
 
   const onSubmit = (data) => {
-    dispatch(registerAction({ ...data, cb: () => router.push("/create-pin") }));
+    dispatch(registerAction({ ...data }));
   };
+
+  if (
+    isSuccess === true &&
+    router.pathname === "/register" &&
+    !isLoading &&
+    !isError
+  ) {
+    router.push("/create-pin");
+  }
 
   const showingPassword = () => {
     setShowPassword(!showPassword);
@@ -106,14 +115,14 @@ function Register() {
               wherever you are. Desktop, laptop, mobile phone? we cover all of
               that for you!
             </p>
-            {error &&
-              error ===
+            {isError &&
+              isError ===
                 `duplicate key value violates unique constraint "users_email_key"` && (
                 <div className="text-error font-bold text-center">
                   Email already registered
                 </div>
               )}
-            {success && (
+            {isSuccess && (
               <div className="text-success font-bold text-center">
                 Register Success
               </div>
@@ -226,7 +235,7 @@ function Register() {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={!isDirty || !isValid || loading}
+                disabled={!isDirty || !isValid || isLoading}
               >
                 Register
               </button>
@@ -244,4 +253,4 @@ function Register() {
   );
 }
 
-export default IsNotLogin(Register);
+export default Register;

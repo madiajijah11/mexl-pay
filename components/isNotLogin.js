@@ -9,7 +9,7 @@ function IsNotLogin(Component) {
 
     useEffect(() => {
       if (token) {
-        router.replace("/home");
+        router.replace("/");
       }
     }, [token, router]);
 

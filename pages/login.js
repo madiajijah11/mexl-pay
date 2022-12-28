@@ -7,7 +7,6 @@ import * as Yup from "yup";
 import YupPassword from "yup-password";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/actions/authAction";
-
 import PhoneImage from "../images/Group-57.png";
 import { useState } from "react";
 import Link from "next/link";
@@ -29,7 +28,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 function Login() {
-  const { error, success, loading } = useSelector((state) => state.auth);
+  const { isError, isSuccess, isLoading } = useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
@@ -48,8 +47,17 @@ function Login() {
   });
 
   const onSubmit = (data) => {
-    dispatch(login({ ...data, cb: () => {} }));
+    dispatch(login({ ...data }));
   };
+
+  if (
+    isSuccess === true &&
+    router.pathname === "/login" &&
+    !isLoading &&
+    !isError
+  ) {
+    router.push("/home");
+  }
 
   const showingPassword = () => {
     setShowPassword(!showPassword);
@@ -98,12 +106,12 @@ function Login() {
               wherever you are. Desktop, laptop, mobile phone? we cover all of
               that for you!
             </p>
-            {error && (
+            {isError && (
               <div className="text-error font-bold text-center">
                 Wrong Email or Password
               </div>
             )}
-            {success && (
+            {isSuccess && (
               <div className="text-success font-bold text-center">
                 Login Success
               </div>
@@ -176,7 +184,7 @@ function Login() {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={!isDirty || !isValid || loading}
+                disabled={!isDirty || !isValid || isLoading}
               >
                 Login
               </button>

@@ -3,7 +3,7 @@ import { axiosInstance } from "../../helpers/axios.helper";
 
 export const login = createAsyncThunk(
   "auth/login",
-  async ({ email, password, cb }, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
@@ -15,7 +15,6 @@ export const login = createAsyncThunk(
         { email, password },
         config
       );
-      cb();
       return res.data.results.token;
     } catch (error) {
       if (error.response && error.response.data.message) {
@@ -29,10 +28,7 @@ export const login = createAsyncThunk(
 
 export const register = createAsyncThunk(
   "auth/register",
-  async (
-    { firstName, lastName, email, password, cb },
-    { rejectWithValue }
-  ) => {
+  async ({ firstName, lastName, email, password }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
@@ -49,7 +45,6 @@ export const register = createAsyncThunk(
         },
         config
       );
-      cb();
       return res.data.results.token;
     } catch (error) {
       if (error.response && error.response.data.message) {

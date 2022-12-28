@@ -8,7 +8,6 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../helpers/axios.helper";
 import jwtDecode from "jwt-decode";
-import IsLogin from '../components/isLogin'
 
 import PhoneImage from "../images/Group-57.png";
 import { useState } from "react";
@@ -30,7 +29,7 @@ function CreatePin() {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
-  const token = useSelector((state) => state?.auth?.token);
+  const { token } = useSelector((state) => state?.auth);
   const { id } = jwtDecode(token);
 
   const {
@@ -197,4 +196,4 @@ function CreatePin() {
   );
 }
 
-export default IsLogin(CreatePin);
+export default CreatePin;
