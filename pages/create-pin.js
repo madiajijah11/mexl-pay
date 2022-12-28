@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../helpers/axios.helper";
 import jwtDecode from "jwt-decode";
+import IsLogin from '../components/isLogin'
 
 import PhoneImage from "../images/Group-57.png";
 import { useState } from "react";
@@ -23,7 +24,7 @@ const PinSchema = Yup.object().shape({
   pin6: Yup.number().required(),
 });
 
-export default function CreatePin() {
+function CreatePin() {
   const [isError, setIsError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -58,8 +59,8 @@ export default function CreatePin() {
         pin,
       });
       if (createPIN.data.success === true) {
-        setIsError(false);
         setIsSuccess(true);
+        setIsError(false);
         setIsLoading(false);
       }
       router.push("/home");
@@ -195,3 +196,5 @@ export default function CreatePin() {
     </>
   );
 }
+
+export default IsLogin(CreatePin);

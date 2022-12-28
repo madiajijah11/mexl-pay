@@ -9,7 +9,7 @@ function IsLogin(Component) {
 
     useEffect(() => {
       if (!token) {
-        router.push("/login");
+        router.replace("/login");
       }
     }, [token, router]);
 

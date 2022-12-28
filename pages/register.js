@@ -33,7 +33,7 @@ const RegisterSchema = Yup.object({
 }).required();
 
 function Register() {
-  const { auth } = useSelector((state) => state);
+  const { error, success, loading } = useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -106,14 +106,14 @@ function Register() {
               wherever you are. Desktop, laptop, mobile phone? we cover all of
               that for you!
             </p>
-            {auth.error &&
-              auth.error ===
+            {error &&
+              error ===
                 `duplicate key value violates unique constraint "users_email_key"` && (
                 <div className="text-error font-bold text-center">
                   Email already registered
                 </div>
               )}
-            {auth.success && (
+            {success && (
               <div className="text-success font-bold text-center">
                 Register Success
               </div>
@@ -226,7 +226,7 @@ function Register() {
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={!isDirty || !isValid || auth?.loading}
+                disabled={!isDirty || !isValid || loading}
               >
                 Register
               </button>
