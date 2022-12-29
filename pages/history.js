@@ -16,13 +16,14 @@ const HistoryContent = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const token = useSelector((state) => state.auth.token);
+  const [paginating, setPaginating] = useState(1);
 
   useEffect(() => {
     const getTransactionHistory = async () => {
       try {
         setIsLoading(true);
         const response = await axiosInstance.get(
-          "transactions?page=1&limit=5",
+          `transactions?page=${paginating}&limit=5`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -37,7 +38,7 @@ const HistoryContent = () => {
       }
     };
     getTransactionHistory();
-  }, [token]);
+  }, [token, paginating]);
   return (
     <section>
       <div className="px-40 py-20 flex gap-5">
@@ -54,9 +55,6 @@ const HistoryContent = () => {
             </div>
           </div>
           <div className="flex flex-col gap-5">
-            {isLoading && (
-              <progress className="progress progress-primary w-56"></progress>
-            )}
             {transactions?.map((transaction) => (
               <div
                 className="flex gap-5 justify-between items-center"
@@ -69,6 +67,7 @@ const HistoryContent = () => {
                       alt="ProfilePicture"
                       width={70}
                       height={70}
+                      className="rounded-lg w-[70px] h-[70px]"
                     />
                   ) : (
                     <Image
@@ -76,6 +75,7 @@ const HistoryContent = () => {
                       alt="ProfilePicture"
                       width={70}
                       height={70}
+                      className="rounded-lg w-[70px] h-[70px]"
                     />
                   )}
                   <div className="flex flex-col justify-center gap-2">
@@ -94,6 +94,22 @@ const HistoryContent = () => {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="flex justify-center gap-5">
+            <button
+              className="btn btn-primary"
+              onClick={() => setPaginating(paginating - 1)}
+              disabled={paginating === 1}
+            >
+              Prev
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={() => setPaginating(paginating + 1)}
+              disabled={transactions.length < 5}
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>

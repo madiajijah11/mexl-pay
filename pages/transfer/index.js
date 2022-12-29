@@ -14,6 +14,7 @@ import Link from "next/link";
 const ReceiverList = () => {
   const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL;
   const [isLoading, setIsLoading] = useState(true);
+  const [paginating, setPaginating] = useState(1);
 
   const [receiverList, setReceiverList] = useState([]);
   const token = useSelector((state) => state.auth.token);
@@ -21,7 +22,7 @@ const ReceiverList = () => {
   const getReceiverList = async () => {
     try {
       const response = await axiosInstance.get(
-        "/transactions/recipient?page=1&limit=50",
+        `/transactions/recipient?page=${paginating}&limit=5`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -37,7 +38,7 @@ const ReceiverList = () => {
 
   useEffect(() => {
     getReceiverList();
-  }, []);
+  }, [paginating]);
 
   return (
     <section>
@@ -89,6 +90,23 @@ const ReceiverList = () => {
               </div>
             </Link>
           ))}
+          {/* create pagination */}
+          <div className="flex justify-center gap-5">
+            <button
+              className="btn btn-primary"
+              onClick={() => setPaginating(paginating - 1)}
+              disabled={paginating === 1}
+            >
+              Prev
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={() => setPaginating(paginating + 1)}
+              disabled={receiverList.length < 5}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </div>
     </section>
