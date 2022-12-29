@@ -90,7 +90,8 @@ const HistoryContent = () => {
                       : "text-red-500 font-bold"
                   }
                 >
-                  {transaction.amount}
+                  {transaction.recipientId === userInfo?.id ? "+" : "-"}
+                  Rp.{Number(transaction.amount).toLocaleString("id")}
                 </div>
               </div>
             ))}

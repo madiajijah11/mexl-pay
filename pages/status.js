@@ -14,6 +14,8 @@ const StatusContent = () => {
     (state) => state.transaction
   );
 
+  
+
   return (
     <section>
       <div className="px-40 py-20 flex gap-5">
