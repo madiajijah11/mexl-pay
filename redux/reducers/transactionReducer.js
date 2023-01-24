@@ -1,45 +1,45 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  recipientId: "",
-  amount: "",
-  notes: "",
-  pin: "",
-};
+  recipientId: '',
+  amount: '',
+  notes: '',
+  pin: ''
+}
 
 const transactionSlice = createSlice({
-  name: "transaction",
+  name: 'transaction',
   initialState,
   reducers: {
     chooseRecipient: (state, action) => {
-      const { recipientId } = action.payload;
+      const { recipientId } = action.payload
       state = {
         ...state,
-        ...{ recipientId },
-      };
-      return state;
+        ...{ recipientId }
+      }
+      return state
     },
     chooseAmount: (state, action) => {
-      const { amount, notes } = action.payload;
+      const { amount, notes } = action.payload
       state = {
         ...state,
-        ...{ amount, notes },
-      };
-      return state;
+        ...{ amount, notes }
+      }
+      return state
     },
     confirmPin: (state, action) => {
-      const { pin } = action.payload;
+      const { pin } = action.payload
       state = {
         ...state,
-        ...{ pin },
-      };
-      return state;
-    },
+        ...{ pin }
+      }
+      return state
+    }
   },
-  extraReducers: (build) => {},
-});
+  extraReducers: build => {}
+})
 
 export const { chooseAmount, chooseRecipient, confirmPin } =
-  transactionSlice.actions;
+  transactionSlice.actions
 
-export default transactionSlice.reducer;
+export default transactionSlice.reducer

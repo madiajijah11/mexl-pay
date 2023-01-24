@@ -1,29 +1,21 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { axiosInstance } from "../../helpers/axios.helper";
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import http from '../../helpers/http'
 
 export const transfer = createAsyncThunk(
-  "transactions/transfer",
+  'transactions/transfer',
   async ({ ...transactionData }, { getState, rejectWithValue }) => {
     try {
-      const { auth } = getState();
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${auth.token}`,
-        },
-      };
-      const { data } = await axiosInstance.post(
-        "/transactions/transfer",
-        { ...transactionData },
-        config
-      );
-      return data.results;
+      const { auth } = getState()
+      const { data } = await http(auth.token).post('/transactions/transfer', {
+        ...transactionData
+      })
+      return data.results
     } catch (error) {
       if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message);
+        return rejectWithValue(error.response.data.message)
       } else {
-        return rejectWithValue(error.message);
+        return rejectWithValue(error.message)
       }
     }
   }
-);
+)

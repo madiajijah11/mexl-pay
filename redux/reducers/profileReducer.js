@@ -1,31 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getProfile } from "../actions/profileAction";
+import { createSlice } from '@reduxjs/toolkit'
+import { getProfile } from '../actions/profileAction'
 
 const initialState = {
   loading: false,
   userInfo: null,
   error: null,
-  success: false,
-};
+  success: false
+}
 
 const profileSlice = createSlice({
-  name: "profile",
+  name: 'profile',
   initialState,
   reducers: {},
-  extraReducers: (build) => {
+  extraReducers: build => {
     build.addCase(getProfile.pending, (state, action) => {
-      state.loading = true;
-    });
+      state.loading = true
+    })
     build.addCase(getProfile.fulfilled, (state, action) => {
-      state.userInfo = action.payload;
-      state.loading = false;
-      state.error = null;
-    });
+      state.userInfo = action.payload
+      state.loading = false
+      state.error = null
+    })
     build.addCase(getProfile.rejected, (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-    });
-  },
-});
+      state.error = action.payload
+      state.loading = false
+    })
+  }
+})
 
-export default profileSlice.reducer;
+export default profileSlice.reducer
