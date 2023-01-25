@@ -8,34 +8,13 @@ import Image from 'next/image'
 import Netflix from '../images/netflix.png'
 import HomeMenu from '../components/homeMenu'
 import IsLogin from '../components/isLogin'
-import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import http from '../helpers/http'
 
-const HomeContent = () => {
+const HomeContent = ({ transactions }) => {
   const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL
   const { userInfo } = useSelector(state => state.profile)
-  const [transactions, setTransactions] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [isError, setIsError] = useState(false)
-  const token = useSelector(state => state.auth.token)
 
-  useEffect(() => {
-    const getTransactionHistory = async () => {
-      try {
-        setIsLoading(true)
-        const response = await http(token).get(
-          '/transactions?page=1&limit=5&sortBy=createdAt&sort=desc'
-        )
-        setTransactions(response.data.results)
-        setIsLoading(false)
-      } catch (error) {
-        setIsError(true)
-        setIsLoading(false)
-      }
-    }
-    getTransactionHistory()
-  }, [token])
   return (
     <section>
       <div className='px-40 py-20 flex gap-5'>
@@ -78,9 +57,6 @@ const HomeContent = () => {
                 </div>
               </div>
               <div className='flex flex-col gap-5 w-full'>
-                {isLoading && (
-                  <progress className='progress progress-primary w-56'></progress>
-                )}
                 {transactions?.map(transaction => (
                   <div
                     className='flex gap-5 justify-between items-center'
@@ -132,7 +108,17 @@ const HomeContent = () => {
   )
 }
 
-function Home () {
+export async function getServerSideProps (context) {
+  const { token } = context.req.cookies
+  const { data } = await http(token).get('/transactions?limit=5')
+  return {
+    props: {
+      transactions: data.results
+    }
+  }
+}
+
+function Home ({ transactions }) {
   return (
     <>
       <Head>
@@ -141,7 +127,7 @@ function Home () {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <NavbarHome />
-      <HomeContent />
+      <HomeContent transactions={transactions} />
       <FooterHome />
     </>
   )

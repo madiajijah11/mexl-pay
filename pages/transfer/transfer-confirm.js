@@ -35,16 +35,15 @@ const Transfer = () => {
   const dispatch = useDispatch()
   const router = useRouter()
 
-  const getRecipient = async () => {
-    const response = await http(token).get(
-      `/transactions/recipient/${recipientId}`
-    )
-    return response.data.results
-  }
-
   useEffect(() => {
+    const getRecipient = async () => {
+      const response = await http(token).get(
+        `/transactions/recipient/${recipientId}`
+      )
+      return response.data.results
+    }
     getRecipient().then(res => setReceiver(res))
-  }, [recipientId])
+  }, [recipientId, token])
 
   const {
     register,

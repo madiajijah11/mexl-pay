@@ -9,31 +9,31 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import http from '../helpers/http'
 
-const HistoryContent = () => {
+const HistoryContent = ({ transactions }) => {
   const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL
   const { userInfo } = useSelector(state => state.profile)
-  const [transactions, setTransactions] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [isError, setIsError] = useState(false)
-  const token = useSelector(state => state.auth.token)
+  // const [transactions, setTransactions] = useState([])
+  // const [isLoading, setIsLoading] = useState(true)
+  // const [isError, setIsError] = useState(false)
+  // const token = useSelector(state => state.auth.token)
   const [paginating, setPaginating] = useState(1)
 
-  useEffect(() => {
-    const getTransactionHistory = async () => {
-      try {
-        setIsLoading(true)
-        const response = await http(token).get(
-          `transactions?page=${paginating}&limit=5`
-        )
-        setTransactions(response.data.results)
-        setIsLoading(false)
-      } catch (error) {
-        setIsError(true)
-        setIsLoading(false)
-      }
-    }
-    getTransactionHistory()
-  }, [token, paginating])
+  // useEffect(() => {
+  //   const getTransactionHistory = async () => {
+  //     try {
+  //       setIsLoading(true)
+  //       const response = await http(token).get(
+  //         `transactions?page=${paginating}&limit=5`
+  //       )
+  //       setTransactions(response.data.results)
+  //       setIsLoading(false)
+  //     } catch (error) {
+  //       setIsError(true)
+  //       setIsLoading(false)
+  //     }
+  //   }
+  //   getTransactionHistory()
+  // }, [token, paginating])
   return (
     <section>
       <div className='px-40 py-20 flex gap-5'>
@@ -113,7 +113,17 @@ const HistoryContent = () => {
   )
 }
 
-function History () {
+export async function getServerSideProps (context) {
+  const { token } = context.req.cookies
+  const { data } = await http(token).get('/transactions?limit=5')
+  return {
+    props: {
+      transactions: data.results
+    }
+  }
+}
+
+function History ({ transactions }) {
   return (
     <>
       <Head>
@@ -122,7 +132,7 @@ function History () {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <NavbarHome />
-      <HistoryContent />
+      <HistoryContent transactions={transactions} />
       <FooterHome />
     </>
   )

@@ -19,21 +19,20 @@ const ReceiverList = () => {
   const [receiverList, setReceiverList] = useState([])
   const token = useSelector(state => state.auth.token)
 
-  const getReceiverList = async () => {
-    try {
-      const response = await http(token).get(
-        `/transactions/recipient?page=${paginating}&limit=5`
-      )
-      setReceiverList(response.data.results)
-      setIsLoading(false)
-    } catch (error) {
-      setIsLoading(true)
-    }
-  }
-
   useEffect(() => {
+    const getReceiverList = async () => {
+      try {
+        const response = await http(token).get(
+          `/transactions/recipient?page=${paginating}&limit=5`
+        )
+        setReceiverList(response.data.results)
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(true)
+      }
+    }
     getReceiverList()
-  }, [paginating])
+  }, [paginating, token])
 
   return (
     <section>

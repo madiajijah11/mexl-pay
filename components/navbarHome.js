@@ -6,7 +6,7 @@ import ProfilePicture from '../images/review.png'
 import { useEffect, useState } from 'react'
 import http from '../helpers/http'
 
-export default function NavbarHome () {
+function NavbarHome () {
   const dispatch = useDispatch()
   const token = useSelector(state => state.auth.token)
   const { userInfo } = useSelector(state => state.profile)
@@ -77,7 +77,7 @@ export default function NavbarHome () {
               {isLoading && (
                 <progress className='progress progress-primary w-56'></progress>
               )}
-              {notifications.map(notification => (
+              {notifications?.map(notification => (
                 <li key={notification.id}>
                   <a className='flex flex-row bg-base-100 gap-2'>
                     {notification.type === 'CREDIT' ? (
@@ -109,3 +109,5 @@ export default function NavbarHome () {
     </nav>
   )
 }
+
+export default NavbarHome

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { setCookie } from 'cookies-next'
 
 const initialState = {
   token: null
@@ -9,10 +10,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state, action) => {
-      return initialState
+      state.token = null
+      setCookie('token', null)
     },
     setToken: (state, action) => {
       state.token = action.payload
+      setCookie('token', action.payload)
     }
   },
   extraReducers: builder => {}

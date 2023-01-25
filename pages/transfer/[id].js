@@ -1,10 +1,10 @@
 import Head from 'next/head'
-import NavbarHome from '../../components/navbarHome'
-import FooterHome from '../../components/footerHome'
+import NavbarHome from '../../components/NavbarHome'
+import FooterHome from '../../components/FooterHome'
 import Image from 'next/image'
-import HomeMenu from '../../components/homeMenu'
+import HomeMenu from '../../components/HomeMenu'
 import ProfilePicture from '../../images/review.png'
-import IsLogin from '../../components/isLogin'
+import IsLogin from '../../components/IsLogin'
 import http from '../../helpers/http'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
@@ -137,14 +137,13 @@ function TransferAmount () {
   const [receiver, setReceiver] = useState({})
   const token = useSelector(state => state.auth.token)
 
-  const fetchReceiver = async () => {
-    const response = await http(token).get(`/transactions/recipient/${id}`)
-    setReceiver(response.data.results)
-  }
-
   useEffect(() => {
+    const fetchReceiver = async () => {
+      const response = await http(token).get(`/transactions/recipient/${id}`)
+      setReceiver(response.data.results)
+    }
     fetchReceiver()
-  }, [id])
+  }, [id, token])
 
   return (
     <>

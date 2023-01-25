@@ -1,40 +1,37 @@
-import { Icon } from '@iconify-icon/react'
-import Head from 'next/head'
-import NavbarHome from '../components/navbarHome'
-import FooterHome from '../components/footerHome'
-import Image from 'next/image'
-import HomeMenu from '../components/homeMenu'
-import ProfilePicture from '../images/review.png'
-import IsLogin from '../components/isLogin'
-import http from '../helpers/http'
-import { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
+import { Icon } from '@iconify-icon/react';
+import Head from 'next/head';
+import NavbarHome from '../components/navbarHome';
+import FooterHome from '../components/footerHome';
+import Image from 'next/image';
+import HomeMenu from '../components/homeMenu';
+import ProfilePicture from '../images/review.png';
+import IsLogin from '../components/isLogin';
+import http from '../helpers/http';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const ReceiverList = () => {
-  const router = useRouter()
-  const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL
-  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter();
+  const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL;
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [receiverList, setReceiverList] = useState([])
-  const token = useSelector(state => state.auth.token)
-
-  const getReceiverList = async () => {
-    try {
-      const response = await http(token).get(
-        '/transactions/recipient?page=1&limit=5'
-      )
-      setReceiverList(response.data.results)
-      setIsLoading(false)
-    } catch (error) {
-      setIsLoading(true)
-    }
-  }
+  const [receiverList, setReceiverList] = useState([]);
+  const token = useSelector(state => state.auth.token);
 
   useEffect(() => {
-    getReceiverList()
-  }, [])
+    const getReceiverList = async () => {
+      try {
+        const response = await http(token).get('/transactions/recipient?page=1&limit=5');
+        setReceiverList(response.data.results);
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(true);
+      }
+    };
+    getReceiverList();
+  }, [token]);
 
   return (
     <section>
@@ -44,21 +41,14 @@ const ReceiverList = () => {
           <div className='font-bold'>Search Receiver</div>
           <div className='input-group bg-base-100 flex items-center rounded-box px-4 py-2 gap-2'>
             <Icon icon='ic:baseline-search' width='40' height='40' />
-            <input
-              type='text'
-              className='input w-full'
-              placeholder='Search Receiver'
-            />
+            <input type='text' className='input w-full' placeholder='Search Receiver' />
           </div>
-          {isLoading && (
-            <progress className='progress progress-primary w-56'></progress>
-          )}
+          {isLoading && <progress className='progress progress-primary w-56'></progress>}
           {receiverList.map(receiver => (
             <Link
               href={`/transfertest/${receiver.id}`}
               className='flex gap-5 items-center rounded-box bg-base-100 shadow-xl p-5'
-              key={receiver.id}
-            >
+              key={receiver.id}>
               <div className='flex gap-4'>
                 {receiver.picture ? (
                   <Image
@@ -68,12 +58,7 @@ const ReceiverList = () => {
                     height={70}
                   />
                 ) : (
-                  <Image
-                    src={ProfilePicture}
-                    alt='ProfilePicture'
-                    width={70}
-                    height={70}
-                  />
+                  <Image src={ProfilePicture} alt='ProfilePicture' width={70} height={70} />
                 )}
                 <div className='flex flex-col justify-center gap-2'>
                   <div className='font-bold'>
@@ -87,8 +72,8 @@ const ReceiverList = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 function Transfer () {
   return (
@@ -102,7 +87,7 @@ function Transfer () {
       <ReceiverList />
       <FooterHome />
     </>
-  )
+  );
 }
 
-export default IsLogin(Transfer)
+export default IsLogin(Transfer);
