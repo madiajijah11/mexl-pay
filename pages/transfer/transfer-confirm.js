@@ -1,21 +1,21 @@
-import Head from 'next/head'
-import NavbarHome from '../../components/navbarHome'
-import FooterHome from '../../components/footerHome'
-import Image from 'next/image'
-import HomeMenu from '../../components/homeMenu'
-import ProfilePicture from '../../images/review.png'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as Yup from 'yup'
-import YupPassword from 'yup-password'
-import IsLogin from '../../components/isLogin'
-import http from '../../helpers/http'
-import { useDispatch, useSelector } from 'react-redux'
-import { useState, useEffect } from 'react'
-import { transfer } from '../../redux/actions/transactionAction'
-import { useRouter } from 'next/router'
+import Head from 'next/head';
+import NavbarHome from '../../components/NavbarHome';
+import FooterHome from '../../components/FooterHome';
+import Image from 'next/image';
+import HomeMenu from '../../components/HomeMenu';
+import ProfilePicture from '../../images/review.png';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import YupPassword from 'yup-password';
+import IsLogin from '../../components/IsLogin';
+import http from '../../helpers/http';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { transfer } from '../../redux/actions/transactionAction';
+import { useRouter } from 'next/router';
 
-YupPassword(Yup)
+YupPassword(Yup);
 
 const PinSchema = Yup.object().shape({
   pin1: Yup.number().required(),
@@ -24,26 +24,24 @@ const PinSchema = Yup.object().shape({
   pin4: Yup.number().required(),
   pin5: Yup.number().required(),
   pin6: Yup.number().required()
-})
+});
 
 const Transfer = () => {
-  const [receiver, setReceiver] = useState({})
-  const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL
-  const { userInfo } = useSelector(state => state.profile)
-  const { amount, recipientId, notes } = useSelector(state => state.transaction)
-  const token = useSelector(state => state.auth.token)
-  const dispatch = useDispatch()
-  const router = useRouter()
+  const [receiver, setReceiver] = useState({});
+  const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL;
+  const { userInfo } = useSelector(state => state.profile);
+  const { amount, recipientId, notes } = useSelector(state => state.transaction);
+  const token = useSelector(state => state.auth.token);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
     const getRecipient = async () => {
-      const response = await http(token).get(
-        `/transactions/recipient/${recipientId}`
-      )
-      return response.data.results
-    }
-    getRecipient().then(res => setReceiver(res))
-  }, [recipientId, token])
+      const response = await http(token).get(`/transactions/recipient/${recipientId}`);
+      return response.data.results;
+    };
+    getRecipient().then(res => setReceiver(res));
+  }, [recipientId, token]);
 
   const {
     register,
@@ -60,13 +58,13 @@ const Transfer = () => {
       pin5: '',
       pin6: ''
     }
-  })
+  });
 
   const onSubmit = data => {
-    const transferPin = `${data.pin1}${data.pin2}${data.pin3}${data.pin4}${data.pin5}${data.pin6}`
-    dispatch(transfer({ amount, recipientId, notes, pin: transferPin }))
-    router.push('/status')
-  }
+    const transferPin = `${data.pin1}${data.pin2}${data.pin3}${data.pin4}${data.pin5}${data.pin6}`;
+    dispatch(transfer({ amount, recipientId, notes, pin: transferPin }));
+    router.push('/status');
+  };
 
   return (
     <section>
@@ -106,9 +104,7 @@ const Transfer = () => {
           <div className='flex gap-5 items-center rounded-box bg-base-100 shadow-xl p-5'>
             <div className='flex flex-col justify-center gap-2'>
               <div>Amount</div>
-              <div className='font-bold text-xl'>
-                Rp{Number(amount).toLocaleString('id')}
-              </div>
+              <div className='font-bold text-xl'>Rp{Number(amount).toLocaleString('id')}</div>
             </div>
           </div>
           <div className='flex gap-5 items-center rounded-box bg-base-100 shadow-xl p-5'>
@@ -122,9 +118,7 @@ const Transfer = () => {
           <div className='flex gap-5 items-center rounded-box bg-base-100 shadow-xl p-5'>
             <div className='flex flex-col justify-center gap-2'>
               <div>Date & Time</div>
-              <div className='font-bold text-xl'>
-                {new Date().toLocaleString()}
-              </div>
+              <div className='font-bold text-xl'>{new Date().toLocaleString()}</div>
             </div>
           </div>
           <div className='flex gap-5 items-center rounded-box bg-base-100 shadow-xl p-5'>
@@ -137,8 +131,7 @@ const Transfer = () => {
             <label
               htmlFor='continue'
               className='btn btn-primary'
-              disabled={userInfo?.balance - amount < 0}
-            >
+              disabled={userInfo?.balance - amount < 0}>
               Continue
             </label>
           </div>
@@ -147,21 +140,14 @@ const Transfer = () => {
       <input type='checkbox' id='continue' className='modal-toggle' />
       <div className='modal'>
         <div className='modal-box relative'>
-          <label
-            htmlFor='continue'
-            className='btn btn-sm btn-circle absolute right-2 top-2'
-          >
+          <label htmlFor='continue' className='btn btn-sm btn-circle absolute right-2 top-2'>
             ✕
           </label>
           <h3 className='text-lg font-bold'>Enter PIN to Transfer</h3>
           <p className='py-4'>
-            Enter your 6 digits PIN for confirmation to continue transferring
-            money.
+            Enter your 6 digits PIN for confirmation to continue transferring money.
           </p>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className='flex flex-col gap-10'
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-10'>
             <div className='w-full flex gap-5'>
               <input
                 name='pin1'
@@ -215,11 +201,7 @@ const Transfer = () => {
               <span className='text-error -mt-8'>PIN is required</span>
             ) : null}
             <div className='modal-action'>
-              <button
-                type='submit'
-                className='btn btn-primary'
-                disabled={!isDirty || !isValid}
-              >
+              <button type='submit' className='btn btn-primary' disabled={!isDirty || !isValid}>
                 Confirm
               </button>
             </div>
@@ -227,8 +209,8 @@ const Transfer = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 function TransferConfirm () {
   return (
@@ -242,7 +224,7 @@ function TransferConfirm () {
       <Transfer />
       <FooterHome />
     </>
-  )
+  );
 }
 
-export default IsLogin(TransferConfirm)
+export default IsLogin(TransferConfirm);

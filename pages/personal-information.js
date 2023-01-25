@@ -1,10 +1,10 @@
-import Head from 'next/head'
-import NavbarHome from '../components/NavbarHome'
-import FooterHome from '../components/FooterHome'
-import HomeMenu from '../components/HomeMenu'
-import Link from 'next/link'
-import IsLogin from '../components/IsLogin'
-import { useSelector } from 'react-redux'
+import Head from 'next/head';
+import NavbarHome from '../components/NavbarHome';
+import FooterHome from '../components/FooterHome';
+import HomeMenu from '../components/HomeMenu';
+import Link from 'next/link';
+import IsLogin from '../components/IsLogin';
+import { useSelector } from 'react-redux';
 
 const PersonalInformationContent = ({ userInfo }) => (
   <section>
@@ -14,8 +14,8 @@ const PersonalInformationContent = ({ userInfo }) => (
         <div className='flex flex-col gap-10 py-5'>
           <div className='font-bold'>Personal Information</div>
           <p className='w-1/3'>
-            We got your personal information from the sign up process. If you
-            want to make changes on your information, contact our support.
+            We got your personal information from the sign up process. If you want to make changes
+            on your information, contact our support.
           </p>
           <div className='flex flex-col gap-5 mt-10'>
             <div className='flex flex-col rounded-box bg-base-100 shadow-xl p-5'>
@@ -44,10 +44,10 @@ const PersonalInformationContent = ({ userInfo }) => (
       </div>
     </div>
   </section>
-)
+);
 
 function PersonalInformation () {
-  const { userInfo } = useSelector(state => state.profile)
+  const { userInfo } = useSelector(state => state.profile);
   return (
     <>
       <Head>
@@ -59,7 +59,7 @@ function PersonalInformation () {
       <PersonalInformationContent userInfo={userInfo} />
       <FooterHome />
     </>
-  )
+  );
 }
 
-export default IsLogin(PersonalInformation)
+export default IsLogin(PersonalInformation);
