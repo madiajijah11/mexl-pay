@@ -1,39 +1,37 @@
-import Head from 'next/head'
-import NavbarHome from '../components/navbarHome'
-import FooterHome from '../components/footerHome'
-import Image from 'next/image'
-import Netflix from '../images/netflix.png'
-import HomeMenu from '../components/homeMenu'
-import IsLogin from '../components/isLogin'
-import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import http from '../helpers/http'
+import Head from 'next/head';
+import NavbarHome from '../components/NavbarHome';
+import FooterHome from '../components/FooterHome';
+import Image from 'next/image';
+import Netflix from '../images/netflix.png';
+import HomeMenu from '../components/HomeMenu';
+import IsLogin from '../components/IsLogin';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import http from '../helpers/http';
 
-const HistoryContent = ({ transactions }) => {
-  const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL
-  const { userInfo } = useSelector(state => state.profile)
-  // const [transactions, setTransactions] = useState([])
-  // const [isLoading, setIsLoading] = useState(true)
-  // const [isError, setIsError] = useState(false)
-  // const token = useSelector(state => state.auth.token)
-  const [paginating, setPaginating] = useState(1)
+const HistoryContent = () => {
+  const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL;
+  const { userInfo } = useSelector(state => state.profile);
+  const [transactions, setTransactions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const token = useSelector(state => state.auth.token);
+  const [paginating, setPaginating] = useState(1);
 
-  // useEffect(() => {
-  //   const getTransactionHistory = async () => {
-  //     try {
-  //       setIsLoading(true)
-  //       const response = await http(token).get(
-  //         `transactions?page=${paginating}&limit=5`
-  //       )
-  //       setTransactions(response.data.results)
-  //       setIsLoading(false)
-  //     } catch (error) {
-  //       setIsError(true)
-  //       setIsLoading(false)
-  //     }
-  //   }
-  //   getTransactionHistory()
-  // }, [token, paginating])
+  useEffect(() => {
+    const getTransactionHistory = async () => {
+      try {
+        setIsLoading(true);
+        const response = await http(token).get(`transactions?page=${paginating}&limit=5`);
+        setTransactions(response.data.results);
+        setIsLoading(false);
+      } catch (error) {
+        setIsError(true);
+        setIsLoading(false);
+      }
+    };
+    getTransactionHistory();
+  }, [token, paginating]);
   return (
     <section>
       <div className='px-40 py-20 flex gap-5'>
@@ -49,12 +47,10 @@ const HistoryContent = ({ transactions }) => {
               </select>
             </div>
           </div>
+          {isLoading && <progress className='progress progress-primary w-56'></progress>}
           <div className='flex flex-col gap-5'>
             {transactions?.map(transaction => (
-              <div
-                className='flex gap-5 justify-between items-center'
-                key={transaction.id}
-              >
+              <div className='flex gap-5 justify-between items-center' key={transaction.id}>
                 <div className='flex gap-4'>
                   {transaction?.recipientPicture ? (
                     <Image
@@ -83,8 +79,7 @@ const HistoryContent = ({ transactions }) => {
                     transaction.recipientId === userInfo?.id
                       ? 'text-green-500 font-bold'
                       : 'text-red-500 font-bold'
-                  }
-                >
+                  }>
                   {transaction.recipientId === userInfo?.id ? '+' : '-'}
                   Rp.{Number(transaction.amount).toLocaleString('id')}
                 </div>
@@ -95,35 +90,23 @@ const HistoryContent = ({ transactions }) => {
             <button
               className='btn btn-primary'
               onClick={() => setPaginating(paginating - 1)}
-              disabled={paginating === 1}
-            >
+              disabled={paginating === 1}>
               Prev
             </button>
             <button
               className='btn btn-primary'
               onClick={() => setPaginating(paginating + 1)}
-              disabled={transactions.length < 5}
-            >
+              disabled={transactions.length < 5}>
               Next
             </button>
           </div>
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export async function getServerSideProps (context) {
-  const { token } = context.req.cookies
-  const { data } = await http(token).get('/transactions?limit=5')
-  return {
-    props: {
-      transactions: data.results
-    }
-  }
-}
-
-function History ({ transactions }) {
+function History () {
   return (
     <>
       <Head>
@@ -132,10 +115,10 @@ function History ({ transactions }) {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <NavbarHome />
-      <HistoryContent transactions={transactions} />
+      <HistoryContent />
       <FooterHome />
     </>
-  )
+  );
 }
 
-export default IsLogin(History)
+export default IsLogin(History);

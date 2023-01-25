@@ -1,19 +1,19 @@
-import { Icon } from '@iconify-icon/react'
-import Link from 'next/link'
-import Head from 'next/head'
-import NavbarHome from '../components/navbarHome'
-import FooterHome from '../components/footerHome'
-import Graph from '../images/expenses.png'
-import Image from 'next/image'
-import Netflix from '../images/netflix.png'
-import HomeMenu from '../components/homeMenu'
-import IsLogin from '../components/isLogin'
-import { useSelector } from 'react-redux'
-import http from '../helpers/http'
+import { Icon } from '@iconify-icon/react';
+import Link from 'next/link';
+import Head from 'next/head';
+import NavbarHome from '../components/NavbarHome';
+import FooterHome from '../components/FooterHome';
+import Graph from '../images/expenses.png';
+import Image from 'next/image';
+import Netflix from '../images/netflix.png';
+import HomeMenu from '../components/HomeMenu';
+import IsLogin from '../components/IsLogin';
+import { useSelector } from 'react-redux';
+import http from '../helpers/http';
 
 const HomeContent = ({ transactions }) => {
-  const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL
-  const { userInfo } = useSelector(state => state.profile)
+  const imgURL = process.env.NEXT_PUBLIC_IMAGE_URL;
+  const { userInfo } = useSelector(state => state.profile);
 
   return (
     <section>
@@ -30,11 +30,7 @@ const HomeContent = ({ transactions }) => {
             </div>
             <div className='flex flex-col gap-2'>
               <Link href='/transfer' className='btn btn-secondary glass'>
-                <Icon
-                  icon='material-symbols:arrow-upward-rounded'
-                  width='40'
-                  height='40'
-                />
+                <Icon icon='material-symbols:arrow-upward-rounded' width='40' height='40' />
                 Transfer
               </Link>
               <label htmlFor='top-up' className='btn btn-secondary glass'>
@@ -58,10 +54,7 @@ const HomeContent = ({ transactions }) => {
               </div>
               <div className='flex flex-col gap-5 w-full'>
                 {transactions?.map(transaction => (
-                  <div
-                    className='flex gap-5 justify-between items-center'
-                    key={transaction.id}
-                  >
+                  <div className='flex gap-5 justify-between items-center' key={transaction.id}>
                     <div className='flex gap-4'>
                       {transaction?.recipientPicture ? (
                         <Image
@@ -81,9 +74,7 @@ const HomeContent = ({ transactions }) => {
                         />
                       )}
                       <div className='flex flex-col justify-center gap-2'>
-                        <div className='font-bold'>
-                          {transaction.recipientname}
-                        </div>
+                        <div className='font-bold'>{transaction.recipientname}</div>
                         <div>{transaction.notes}</div>
                       </div>
                     </div>
@@ -92,8 +83,7 @@ const HomeContent = ({ transactions }) => {
                         transaction.recipientId === userInfo?.id
                           ? 'text-green-500 font-bold'
                           : 'text-red-500 font-bold'
-                      }
-                    >
+                      }>
                       {transaction.recipientId === userInfo?.id ? '+' : '-'}
                       Rp.{Number(transaction.amount).toLocaleString('id')}
                     </div>
@@ -105,17 +95,17 @@ const HomeContent = ({ transactions }) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 export async function getServerSideProps (context) {
-  const { token } = context.req.cookies
-  const { data } = await http(token).get('/transactions?limit=5')
+  const { token } = context.req.cookies;
+  const { data } = await http(token).get('/transactions?limit=5');
   return {
     props: {
       transactions: data.results
     }
-  }
+  };
 }
 
 function Home ({ transactions }) {
@@ -130,7 +120,7 @@ function Home ({ transactions }) {
       <HomeContent transactions={transactions} />
       <FooterHome />
     </>
-  )
+  );
 }
 
-export default IsLogin(Home)
+export default IsLogin(Home);
