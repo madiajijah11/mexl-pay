@@ -32,8 +32,6 @@ const RegisterSchema = Yup.object({
 }).required();
 
 function Register () {
-  const { isError, isSuccess, isLoading } = useSelector(state => state.auth);
-
   const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
@@ -42,7 +40,7 @@ function Register () {
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty, isValid }
+    formState: { errors, isDirty, isValid, isSubmitting }
   } = useForm({
     mode: 'all',
     resolver: yupResolver(RegisterSchema),
@@ -54,19 +52,22 @@ function Register () {
     }
   });
 
-  const onSubmit = values => {
-    const { data } = http().post('/auth/register', {
-      firstName: values.firstName,
-      lastName: values.lastName,
-      email: values.email,
-      password: values.password
-    });
-    dispatch(setToken(data.results.token));
+  const onSubmit = async values => {
+    try {
+      const { data } = await http().post('/auth/register', {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password
+      });
+      dispatch(setToken(data.results.token));
+      setTimeout(() => {
+        router.push('/crete-pin');
+      }, 3000);
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  if (isSuccess === true && router.pathname === '/register' && !isLoading && !isError) {
-    router.push('/create-pin');
-  }
 
   const showingPassword = () => {
     setShowPassword(!showPassword);
@@ -105,13 +106,10 @@ function Register () {
               Transferring money is easier than ever, you can access MexL Pay wherever you are.
               Desktop, laptop, mobile phone? we cover all of that for you!
             </p>
-            {isError &&
+            {/* {isError &&
               isError === `duplicate key value violates unique constraint "users_email_key"` && (
                 <div className='text-error font-bold text-center'>Email already registered</div>
-              )}
-            {isSuccess && (
-              <div className='text-success font-bold text-center'>Register Success</div>
-            )}
+              )} */}
             <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-10'>
               <div>
                 <div className='w-full input-group'>
@@ -199,7 +197,7 @@ function Register () {
               <button
                 type='submit'
                 className='btn btn-primary'
-                disabled={!isDirty || !isValid || isLoading}>
+                disabled={!isDirty || !isValid || isSubmitting}>
                 Register
               </button>
             </form>
