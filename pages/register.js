@@ -1,19 +1,20 @@
-import Image from 'next/image'
-import Head from 'next/head'
-import { useForm } from 'react-hook-form'
-import { Icon } from '@iconify-icon/react'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as Yup from 'yup'
-import YupPassword from 'yup-password'
-import { useRouter } from 'next/router'
-import { useDispatch, useSelector } from 'react-redux'
+import Image from 'next/image';
+import Head from 'next/head';
+import { useForm } from 'react-hook-form';
+import { Icon } from '@iconify-icon/react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import YupPassword from 'yup-password';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import http from '../helpers/http';
 
-import PhoneImage from '../images/Group-57.png'
-import { useState } from 'react'
-import Link from 'next/link'
-import { setToken } from '../redux/reducers/authReducer'
+import PhoneImage from '../images/Group-57.png';
+import { useState } from 'react';
+import Link from 'next/link';
+import { setToken } from '../redux/reducers/authReducer';
 
-YupPassword(Yup)
+YupPassword(Yup);
 
 const RegisterSchema = Yup.object({
   firstName: Yup.string().required(),
@@ -28,15 +29,15 @@ const RegisterSchema = Yup.object({
     .minUppercase(1)
     .minNumbers(1)
     .minSymbols(1)
-}).required()
+}).required();
 
 function Register () {
-  const { isError, isSuccess, isLoading } = useSelector(state => state.auth)
+  const { isError, isSuccess, isLoading } = useSelector(state => state.auth);
 
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
-  const router = useRouter()
-  const dispatch = useDispatch()
+  const router = useRouter();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -51,7 +52,7 @@ function Register () {
       email: '',
       password: ''
     }
-  })
+  });
 
   const onSubmit = values => {
     const { data } = http().post('/auth/register', {
@@ -59,22 +60,17 @@ function Register () {
       lastName: values.lastName,
       email: values.email,
       password: values.password
-    })
-    dispatch(setToken(data.results.token))
-  }
+    });
+    dispatch(setToken(data.results.token));
+  };
 
-  if (
-    isSuccess === true &&
-    router.pathname === '/register' &&
-    !isLoading &&
-    !isError
-  ) {
-    router.push('/create-pin')
+  if (isSuccess === true && router.pathname === '/register' && !isLoading && !isError) {
+    router.push('/create-pin');
   }
 
   const showingPassword = () => {
-    setShowPassword(!showPassword)
-  }
+    setShowPassword(!showPassword);
+  };
 
   return (
     <>
@@ -92,57 +88,35 @@ function Register () {
               </div>
             </div>
             <div className='relative w-full flex flex-col items-center'>
-              <Image
-                src={PhoneImage}
-                alt='Phone Image'
-                width={500}
-                height={500}
-              />
+              <Image src={PhoneImage} alt='Phone Image' width={500} height={500} />
             </div>
-            <div className='font-bold text-2xl'>
-              App that Covering Banking Needs.
-            </div>
+            <div className='font-bold text-2xl'>App that Covering Banking Needs.</div>
             <p>
-              MexL Pay is an application that focussing in banking needs for all
-              users in the world. Always updated and always following world
-              trends. 5000+ users registered in MexL Pay everyday with worldwide
-              users coverage.
+              MexL Pay is an application that focussing in banking needs for all users in the world.
+              Always updated and always following world trends. 5000+ users registered in MexL Pay
+              everyday with worldwide users coverage.
             </p>
           </div>
           <div className='w-2/5 py-16 px-14 flex flex-col gap-5 justify-center'>
             <div className='font-bold text-2xl'>
-              Start Accessing Banking Needs With All Devices and All Platforms
-              With 30.000+ Users
+              Start Accessing Banking Needs With All Devices and All Platforms With 30.000+ Users
             </div>
             <p className='mb-10'>
-              Transferring money is easier than ever, you can access MexL Pay
-              wherever you are. Desktop, laptop, mobile phone? we cover all of
-              that for you!
+              Transferring money is easier than ever, you can access MexL Pay wherever you are.
+              Desktop, laptop, mobile phone? we cover all of that for you!
             </p>
             {isError &&
-              isError ===
-                `duplicate key value violates unique constraint "users_email_key"` && (
-                <div className='text-error font-bold text-center'>
-                  Email already registered
-                </div>
+              isError === `duplicate key value violates unique constraint "users_email_key"` && (
+                <div className='text-error font-bold text-center'>Email already registered</div>
               )}
             {isSuccess && (
-              <div className='text-success font-bold text-center'>
-                Register Success
-              </div>
+              <div className='text-success font-bold text-center'>Register Success</div>
             )}
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className='flex flex-col gap-10'
-            >
+            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-10'>
               <div>
                 <div className='w-full input-group'>
                   <span>
-                    <Icon
-                      icon='material-symbols:person'
-                      width='35'
-                      height='35'
-                    />
+                    <Icon icon='material-symbols:person' width='35' height='35' />
                   </span>
                   <input
                     name='firstName'
@@ -153,19 +127,13 @@ function Register () {
                   />
                 </div>
                 {errors.firstName && (
-                  <span className='text-error mt-2'>
-                    {errors.firstName?.message}
-                  </span>
+                  <span className='text-error mt-2'>{errors.firstName?.message}</span>
                 )}
               </div>
               <div>
                 <div className='w-full input-group'>
                   <span>
-                    <Icon
-                      icon='material-symbols:person'
-                      width='35'
-                      height='35'
-                    />
+                    <Icon icon='material-symbols:person' width='35' height='35' />
                   </span>
                   <input
                     name='lastName'
@@ -176,9 +144,7 @@ function Register () {
                   />
                 </div>
                 {errors.lastName && (
-                  <span className='text-error mt-2'>
-                    {errors.lastName?.message}
-                  </span>
+                  <span className='text-error mt-2'>{errors.lastName?.message}</span>
                 )}
               </div>
               <div>
@@ -194,11 +160,7 @@ function Register () {
                     {...register('email')}
                   />
                 </div>
-                {errors.email && (
-                  <span className='text-error mt-2'>
-                    {errors.email?.message}
-                  </span>
-                )}
+                {errors.email && <span className='text-error mt-2'>{errors.email?.message}</span>}
               </div>
               <div>
                 <div className='w-full input-group relative'>
@@ -231,16 +193,13 @@ function Register () {
                   />
                 </div>
                 {errors.password && (
-                  <span className='text-error mt-2'>
-                    {errors.password?.message}
-                  </span>
+                  <span className='text-error mt-2'>{errors.password?.message}</span>
                 )}
               </div>
               <button
                 type='submit'
                 className='btn btn-primary'
-                disabled={!isDirty || !isValid || isLoading}
-              >
+                disabled={!isDirty || !isValid || isLoading}>
                 Register
               </button>
             </form>
@@ -254,7 +213,7 @@ function Register () {
         </div>
       </main>
     </>
-  )
+  );
 }
 
-export default Register
+export default Register;
