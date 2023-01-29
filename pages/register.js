@@ -33,6 +33,7 @@ const RegisterSchema = Yup.object({
 
 function Register () {
   const [showPassword, setShowPassword] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -65,7 +66,14 @@ function Register () {
         router.push('/crete-pin');
       }, 3000);
     } catch (error) {
-      console.log(error);
+      if (
+        error.response.data.message ===
+        'duplicate key value violates unique constraint "users_email_key"'
+      ) {
+        setAlertMessage('Email already exists');
+      } else {
+        setAlertMessage(error.response.data.message);
+      }
     }
   };
 
@@ -106,10 +114,21 @@ function Register () {
               Transferring money is easier than ever, you can access MexL Pay wherever you are.
               Desktop, laptop, mobile phone? we cover all of that for you!
             </p>
-            {/* {isError &&
-              isError === `duplicate key value violates unique constraint "users_email_key"` && (
-                <div className='text-error font-bold text-center'>Email already registered</div>
-              )} */}
+            {alertMessage && (
+              <div className='alert alert-error'>
+                <div className='flex-1'>
+                  <Icon icon='mdi:alert-circle' className='w-5 h-5 mr-2' />
+                  <label>{alertMessage}</label>
+                </div>
+                <Icon
+                  icon='mdi:close'
+                  className='w-5 h-5 ml-2 cursor-pointer'
+                  onClick={() => {
+                    setAlertMessage('');
+                  }}
+                />
+              </div>
+            )}
             <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-10'>
               <div>
                 <div className='w-full input-group'>
@@ -122,6 +141,7 @@ function Register () {
                     placeholder='Enter your first name'
                     className='input input-bordered input-primary w-full'
                     {...register('firstName')}
+                    disabled={isSubmitting}
                   />
                 </div>
                 {errors.firstName && (
@@ -139,6 +159,7 @@ function Register () {
                     placeholder='Enter your last name'
                     className='input input-bordered input-primary w-full'
                     {...register('lastName')}
+                    disabled={isSubmitting}
                   />
                 </div>
                 {errors.lastName && (
@@ -156,6 +177,7 @@ function Register () {
                     placeholder='Enter your e-mail'
                     className='input input-bordered input-primary w-full'
                     {...register('email')}
+                    disabled={isSubmitting}
                   />
                 </div>
                 {errors.email && <span className='text-error mt-2'>{errors.email?.message}</span>}
@@ -188,6 +210,7 @@ function Register () {
                     placeholder='Enter your password'
                     className='input input-bordered input-primary w-full'
                     {...register('password')}
+                    disabled={isSubmitting}
                   />
                 </div>
                 {errors.password && (

@@ -12,6 +12,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import IsNotLogin from '../components/IsNotLogin';
 import http from '../helpers/http';
+import useSWR from 'swr';
 
 YupPassword(Yup);
 
@@ -31,6 +32,7 @@ const LoginSchema = Yup.object().shape({
 function Login () {
   const { token } = useSelector(state => state.auth);
   const [showPassword, setShowPassword] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const dispatch = useDispatch();
 
   const {
@@ -47,11 +49,15 @@ function Login () {
   });
 
   const onSubmit = async values => {
-    const { data } = await http().post('/auth/login', {
-      email: values.email,
-      password: values.password
-    });
-    dispatch(setToken(data.results.token));
+    try {
+      const { data } = await http().post('/auth/login', {
+        email: values.email,
+        password: values.password
+      });
+      dispatch(setToken(data.results.token));
+    } catch (error) {
+      setAlertMessage(error.response.data.message);
+    }
   };
 
   useEffect(() => {
@@ -97,6 +103,21 @@ function Login () {
               Transferring money is easier than ever, you can access MexL Pay wherever you are.
               Desktop, laptop, mobile phone? we cover all of that for you!
             </p>
+            {alertMessage && (
+              <div className='alert alert-error'>
+                <div className='flex-1'>
+                  <Icon icon='mdi:alert-circle' className='w-5 h-5 mr-2' />
+                  <label>{alertMessage}</label>
+                </div>
+                <Icon
+                  icon='mdi:close'
+                  className='w-5 h-5 ml-2 cursor-pointer'
+                  onClick={() => {
+                    setAlertMessage('');
+                  }}
+                />
+              </div>
+            )}
             <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-10'>
               <div>
                 <div className='w-full input-group'>
@@ -109,6 +130,7 @@ function Login () {
                     placeholder='Enter your e-mail'
                     className='input input-bordered input-primary w-full'
                     {...register('email', { required: true })}
+                    disabled={isSubmitting}
                   />
                 </div>
                 {errors.email && <span className='text-error mt-2'>{errors.email?.message}</span>}
@@ -142,6 +164,7 @@ function Login () {
                     className='input input-bordered input-primary w-full'
                     autoComplete='on'
                     {...register('password', { required: true })}
+                    disabled={isSubmitting}
                   />
                 </div>
                 {errors.password && (
